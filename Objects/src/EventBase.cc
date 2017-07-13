@@ -152,7 +152,7 @@ panda::EventBase::doBook_(TTree& _tree, utils::BranchList const& _branches)
 {
   utils::book(_tree, "", "runNumber", "", 'i', &runNumber, _branches);
   utils::book(_tree, "", "lumiNumber", "", 'i', &lumiNumber, _branches);
-  utils::book(_tree, "", "eventNumber", "", 'i', &eventNumber, _branches);
+  utils::book(_tree, "", "eventNumber", "", 'l', &eventNumber, _branches);
   utils::book(_tree, "", "isData", "", 'O', &isData, _branches);
   utils::book(_tree, "", "weight", "", 'F', &weight, _branches);
 }
@@ -171,9 +171,12 @@ panda::EventBase::doGetEntry_(TTree& _tree)
       rItr = runTrees_.emplace(&_tree, std::make_pair<Int_t, TTree*>(-1, 0)).first;
     }
 
-    if (_tree.GetTreeNumber() != rItr->second.first) {
+    if (_tree.GetTreeNumber() == rItr->second.first) {
+      // We are on the same tree. Just check for run number transition (and update the trigger table if necessary)
+      run.findEntry(*rItr->second.second, runNumber);
+    }
+    else {
       // There was a file transition in the input
-
       rItr->second.first = _tree.GetTreeNumber();
 
       // First check that the runNumber branch is turned on
@@ -199,7 +202,6 @@ panda::EventBase::doGetEntry_(TTree& _tree)
         run.resetCache();
 
         // Now cue the run object to the given run number
-        // Does nothing if the run number is unchanged
         run.findEntry(*rItr->second.second, runNumber);
       }
       else {
