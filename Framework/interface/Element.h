@@ -114,6 +114,7 @@ namespace panda {
      * referenced by singlet Elements. When a singlet Element is destructed, the slots in StoraManager
      * it referred to are freed and is recycled for the next instantiation of an Element object.
      */
+  public:
     class StoreManager : public std::map<Element const*, ArrayBase*> {
     public:
       ArrayBase& getArray(Element const*) const;
@@ -122,6 +123,7 @@ namespace panda {
     };
 
     static StoreManager gStore;
+    StoreManager& getStore() {return gStore;}
   };
 
   template<class O>

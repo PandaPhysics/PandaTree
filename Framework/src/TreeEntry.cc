@@ -70,6 +70,7 @@ panda::TreeEntry::init()
 Int_t
 panda::TreeEntry::getEntry(UInt_t _treeId, Long64_t _entry, Bool_t _localEntry/* = kFALSE*/)
 {
+
   init();
 
   if (!_localEntry)
@@ -79,8 +80,10 @@ panda::TreeEntry::getEntry(UInt_t _treeId, Long64_t _entry, Bool_t _localEntry/*
 
   // This breaks if setAddress is called on individual collections separately
   // (tree id must be synched between all objects and this tree entry)
-  for (auto* obj : objects_)
+
+  for (auto* obj : objects_){
     bytes += obj->getEntry(_treeId, _entry, true);
+  }
 
   // Get data for my branches
   for (auto* branch : inputBranches_[_treeId].second) {
