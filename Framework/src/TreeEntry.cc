@@ -4,9 +4,8 @@
 void
 panda::TreeEntry::setStatus(TTree& _tree, utils::BranchList const& _branches)
 {
-  for (auto* obj : objects_)
-    obj->setStatus(_tree, _branches.subList(obj->getName()));
-
+  for (auto* obj : objects_){
+    obj->setStatus(_tree, _branches.subList(obj->getName()));}
   doSetStatus_(_tree, _branches);
 }
 
@@ -41,9 +40,9 @@ panda::TreeEntry::getBranchNames(Bool_t/* = kTRUE*/, Bool_t _direct/* = kFALSE*/
 UInt_t
 panda::TreeEntry::setAddress(TTree& _tree, utils::BranchList const& _branches/* = {"*"}*/, Bool_t _setStatus/* = kTRUE*/)
 {
-  for (auto* obj : objects_)
+  for (auto* obj : objects_){
     obj->setAddress(_tree, _branches.subList(obj->getName()), _setStatus);
-
+}
   doSetAddress_(_tree, _branches, _setStatus);
 
   return registerInput_(_tree);

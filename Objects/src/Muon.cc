@@ -6,7 +6,7 @@ panda::Muon::getListOfBranches()
 {
   utils::BranchList blist;
   blist += Lepton::getListOfBranches();
-  blist += {"pfRelIso04_all", "ptErr", "segmentComp", "nStations", "nTrackerLayers", "highPtId", "miniIsoId", "multiIsoId", "mvaId", "pfIsoId", "tkIsoId", "inTimeMuon", "isGlobal", "isTracker", "mediumId", "mediumPromptId", "softId", "softMvaId", "tightId", "triggerIdLoose"};
+  blist += {"pfRelIso04_all", "pfRelIso03_all", "pfRelIso03_chg", "ptErr", "segmentComp", "nStations", "nTrackerLayers", "highPtId", "miniIsoId", "multiIsoId", "mvaId", "pfIsoId", "tkIsoId", "inTimeMuon", "isGlobal", "isTracker", "mediumId", "mediumPromptId", "softId", "softMvaId", "tightId", "triggerIdLoose"};
   return blist;
 }
 
@@ -16,16 +16,18 @@ panda::Muon::datastore::allocate(UInt_t _nmax)
   Lepton::datastore::allocate(_nmax);
 
   pfRelIso04_all = new Float_t[nmax_];
+  pfRelIso03_all = new Float_t[nmax_];
+  pfRelIso03_chg = new Float_t[nmax_];
   ptErr = new Float_t[nmax_];
   segmentComp = new Float_t[nmax_];
   nStations = new Int_t[nmax_];
   nTrackerLayers = new Int_t[nmax_];
   highPtId = new UChar_t[nmax_];
-  miniIsoId = new UChar_t[nmax_];
+  miniIsoId = new Int_t[nmax_];
   multiIsoId = new UChar_t[nmax_];
-  mvaId = new UChar_t[nmax_];
-  pfIsoId = new UChar_t[nmax_];
-  tkIsoId = new UChar_t[nmax_];
+  mvaId = new Int_t[nmax_];
+  pfIsoId = new Int_t[nmax_];
+  tkIsoId = new Int_t[nmax_];
   inTimeMuon = new Bool_t[nmax_];
   isGlobal = new Bool_t[nmax_];
   isTracker = new Bool_t[nmax_];
@@ -44,6 +46,10 @@ panda::Muon::datastore::deallocate()
 
   delete [] pfRelIso04_all;
   pfRelIso04_all = 0;
+  delete [] pfRelIso03_all;
+  pfRelIso03_all = 0;
+  delete [] pfRelIso03_chg;
+  pfRelIso03_chg = 0;
   delete [] ptErr;
   ptErr = 0;
   delete [] segmentComp;
@@ -90,6 +96,8 @@ panda::Muon::datastore::setStatus(TTree& _tree, TString const& _name, utils::Bra
   Lepton::datastore::setStatus(_tree, _name, _branches);
 
   utils::setStatus(_tree, _name, "pfRelIso04_all", _branches);
+  utils::setStatus(_tree, _name, "pfRelIso03_all", _branches);
+  utils::setStatus(_tree, _name, "pfRelIso03_chg", _branches);
   utils::setStatus(_tree, _name, "ptErr", _branches);
   utils::setStatus(_tree, _name, "segmentComp", _branches);
   utils::setStatus(_tree, _name, "nStations", _branches);
@@ -117,6 +125,8 @@ panda::Muon::datastore::getStatus(TTree& _tree, TString const& _name) const
   utils::BranchList blist(Lepton::datastore::getStatus(_tree, _name));
 
   blist.push_back(utils::getStatus(_tree, _name, "pfRelIso04_all"));
+  blist.push_back(utils::getStatus(_tree, _name, "pfRelIso03_all"));
+  blist.push_back(utils::getStatus(_tree, _name, "pfRelIso03_chg"));
   blist.push_back(utils::getStatus(_tree, _name, "ptErr"));
   blist.push_back(utils::getStatus(_tree, _name, "segmentComp"));
   blist.push_back(utils::getStatus(_tree, _name, "nStations"));
@@ -146,6 +156,8 @@ panda::Muon::datastore::setAddress(TTree& _tree, TString const& _name, utils::Br
   Lepton::datastore::setAddress(_tree, _name, _branches, _setStatus);
 
   utils::setAddress(_tree, _name, "pfRelIso04_all", pfRelIso04_all, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "pfRelIso03_all", pfRelIso03_all, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "pfRelIso03_chg", pfRelIso03_chg, _branches, _setStatus);
   utils::setAddress(_tree, _name, "ptErr", ptErr, _branches, _setStatus);
   utils::setAddress(_tree, _name, "segmentComp", segmentComp, _branches, _setStatus);
   utils::setAddress(_tree, _name, "nStations", nStations, _branches, _setStatus);
@@ -175,16 +187,18 @@ panda::Muon::datastore::book(TTree& _tree, TString const& _name, utils::BranchLi
   TString size(_dynamic ? "[" + _name + ".size]" : TString::Format("[%d]", nmax_));
 
   utils::book(_tree, _name, "pfRelIso04_all", size, 'F', pfRelIso04_all, _branches);
+  utils::book(_tree, _name, "pfRelIso03_all", size, 'F', pfRelIso03_all, _branches);
+  utils::book(_tree, _name, "pfRelIso03_chg", size, 'F', pfRelIso03_chg, _branches);
   utils::book(_tree, _name, "ptErr", size, 'F', ptErr, _branches);
   utils::book(_tree, _name, "segmentComp", size, 'F', segmentComp, _branches);
   utils::book(_tree, _name, "nStations", size, 'I', nStations, _branches);
   utils::book(_tree, _name, "nTrackerLayers", size, 'I', nTrackerLayers, _branches);
   utils::book(_tree, _name, "highPtId", size, 'b', highPtId, _branches);
-  utils::book(_tree, _name, "miniIsoId", size, 'b', miniIsoId, _branches);
+  utils::book(_tree, _name, "miniIsoId", size, 'I', miniIsoId, _branches);
   utils::book(_tree, _name, "multiIsoId", size, 'b', multiIsoId, _branches);
-  utils::book(_tree, _name, "mvaId", size, 'b', mvaId, _branches);
-  utils::book(_tree, _name, "pfIsoId", size, 'b', pfIsoId, _branches);
-  utils::book(_tree, _name, "tkIsoId", size, 'b', tkIsoId, _branches);
+  utils::book(_tree, _name, "mvaId", size, 'I', mvaId, _branches);
+  utils::book(_tree, _name, "pfIsoId", size, 'I', pfIsoId, _branches);
+  utils::book(_tree, _name, "tkIsoId", size, 'I', tkIsoId, _branches);
   utils::book(_tree, _name, "inTimeMuon", size, 'O', inTimeMuon, _branches);
   utils::book(_tree, _name, "isGlobal", size, 'O', isGlobal, _branches);
   utils::book(_tree, _name, "isTracker", size, 'O', isTracker, _branches);
@@ -202,6 +216,8 @@ panda::Muon::datastore::releaseTree(TTree& _tree, TString const& _name)
   Lepton::datastore::releaseTree(_tree, _name);
 
   utils::resetAddress(_tree, _name, "pfRelIso04_all");
+  utils::resetAddress(_tree, _name, "pfRelIso03_all");
+  utils::resetAddress(_tree, _name, "pfRelIso03_chg");
   utils::resetAddress(_tree, _name, "ptErr");
   utils::resetAddress(_tree, _name, "segmentComp");
   utils::resetAddress(_tree, _name, "nStations");
@@ -240,6 +256,8 @@ panda::Muon::datastore::getBranchNames(TString const& _name/* = ""*/) const
 panda::Muon::Muon(char const* _name/* = ""*/) :
   Lepton(new MuonArray(1, _name)),
   pfRelIso04_all(gStore.getData(this).pfRelIso04_all[0]),
+  pfRelIso03_all(gStore.getData(this).pfRelIso03_all[0]),
+  pfRelIso03_chg(gStore.getData(this).pfRelIso03_chg[0]),
   ptErr(gStore.getData(this).ptErr[0]),
   segmentComp(gStore.getData(this).segmentComp[0]),
   nStations(gStore.getData(this).nStations[0]),
@@ -265,6 +283,8 @@ panda::Muon::Muon(char const* _name/* = ""*/) :
 panda::Muon::Muon(Muon const& _src) :
   Lepton(new MuonArray(1, _src.getName())),
   pfRelIso04_all(gStore.getData(this).pfRelIso04_all[0]),
+  pfRelIso03_all(gStore.getData(this).pfRelIso03_all[0]),
+  pfRelIso03_chg(gStore.getData(this).pfRelIso03_chg[0]),
   ptErr(gStore.getData(this).ptErr[0]),
   segmentComp(gStore.getData(this).segmentComp[0]),
   nStations(gStore.getData(this).nStations[0]),
@@ -291,6 +311,8 @@ panda::Muon::Muon(Muon const& _src) :
 panda::Muon::Muon(datastore& _data, UInt_t _idx) :
   Lepton(_data, _idx),
   pfRelIso04_all(_data.pfRelIso04_all[_idx]),
+  pfRelIso03_all(_data.pfRelIso03_all[_idx]),
+  pfRelIso03_chg(_data.pfRelIso03_chg[_idx]),
   ptErr(_data.ptErr[_idx]),
   segmentComp(_data.segmentComp[_idx]),
   nStations(_data.nStations[_idx]),
@@ -316,6 +338,8 @@ panda::Muon::Muon(datastore& _data, UInt_t _idx) :
 panda::Muon::Muon(ArrayBase* _array) :
   Lepton(_array),
   pfRelIso04_all(gStore.getData(this).pfRelIso04_all[0]),
+  pfRelIso03_all(gStore.getData(this).pfRelIso03_all[0]),
+  pfRelIso03_chg(gStore.getData(this).pfRelIso03_chg[0]),
   ptErr(gStore.getData(this).ptErr[0]),
   segmentComp(gStore.getData(this).segmentComp[0]),
   nStations(gStore.getData(this).nStations[0]),
@@ -359,6 +383,8 @@ panda::Muon::operator=(Muon const& _src)
   Lepton::operator=(_src);
 
   pfRelIso04_all = _src.pfRelIso04_all;
+  pfRelIso03_all = _src.pfRelIso03_all;
+  pfRelIso03_chg = _src.pfRelIso03_chg;
   ptErr = _src.ptErr;
   segmentComp = _src.segmentComp;
   nStations = _src.nStations;
@@ -391,16 +417,18 @@ panda::Muon::doBook_(TTree& _tree, TString const& _name, utils::BranchList const
   Lepton::doBook_(_tree, _name, _branches);
 
   utils::book(_tree, _name, "pfRelIso04_all", "", 'F', &pfRelIso04_all, _branches);
+  utils::book(_tree, _name, "pfRelIso03_all", "", 'F', &pfRelIso03_all, _branches);
+  utils::book(_tree, _name, "pfRelIso03_chg", "", 'F', &pfRelIso03_chg, _branches);
   utils::book(_tree, _name, "ptErr", "", 'F', &ptErr, _branches);
   utils::book(_tree, _name, "segmentComp", "", 'F', &segmentComp, _branches);
   utils::book(_tree, _name, "nStations", "", 'I', &nStations, _branches);
   utils::book(_tree, _name, "nTrackerLayers", "", 'I', &nTrackerLayers, _branches);
   utils::book(_tree, _name, "highPtId", "", 'b', &highPtId, _branches);
-  utils::book(_tree, _name, "miniIsoId", "", 'b', &miniIsoId, _branches);
+  utils::book(_tree, _name, "miniIsoId", "", 'I', &miniIsoId, _branches);
   utils::book(_tree, _name, "multiIsoId", "", 'b', &multiIsoId, _branches);
-  utils::book(_tree, _name, "mvaId", "", 'b', &mvaId, _branches);
-  utils::book(_tree, _name, "pfIsoId", "", 'b', &pfIsoId, _branches);
-  utils::book(_tree, _name, "tkIsoId", "", 'b', &tkIsoId, _branches);
+  utils::book(_tree, _name, "mvaId", "", 'I', &mvaId, _branches);
+  utils::book(_tree, _name, "pfIsoId", "", 'I', &pfIsoId, _branches);
+  utils::book(_tree, _name, "tkIsoId", "", 'I', &tkIsoId, _branches);
   utils::book(_tree, _name, "inTimeMuon", "", 'O', &inTimeMuon, _branches);
   utils::book(_tree, _name, "isGlobal", "", 'O', &isGlobal, _branches);
   utils::book(_tree, _name, "isTracker", "", 'O', &isTracker, _branches);
@@ -418,6 +446,8 @@ panda::Muon::doInit_()
   Lepton::doInit_();
 
   pfRelIso04_all = 0.;
+  pfRelIso03_all = 0.;
+  pfRelIso03_chg = 0.;
   ptErr = 0.;
   segmentComp = 0.;
   nStations = 0;
@@ -456,16 +486,18 @@ panda::Muon::dump(std::ostream& _out/* = std::cout*/) const
   Lepton::dump(_out);
 
   _out << "pfRelIso04_all = " << pfRelIso04_all << std::endl;
+  _out << "pfRelIso03_all = " << pfRelIso03_all << std::endl;
+  _out << "pfRelIso03_chg = " << pfRelIso03_chg << std::endl;
   _out << "ptErr = " << ptErr << std::endl;
   _out << "segmentComp = " << segmentComp << std::endl;
   _out << "nStations = " << nStations << std::endl;
   _out << "nTrackerLayers = " << nTrackerLayers << std::endl;
   _out << "highPtId = " << static_cast<const UInt_t>(highPtId) << std::endl;
-  _out << "miniIsoId = " << static_cast<const UInt_t>(miniIsoId) << std::endl;
+  _out << "miniIsoId = " << miniIsoId << std::endl;
   _out << "multiIsoId = " << static_cast<const UInt_t>(multiIsoId) << std::endl;
-  _out << "mvaId = " << static_cast<const UInt_t>(mvaId) << std::endl;
-  _out << "pfIsoId = " << static_cast<const UInt_t>(pfIsoId) << std::endl;
-  _out << "tkIsoId = " << static_cast<const UInt_t>(tkIsoId) << std::endl;
+  _out << "mvaId = " << mvaId << std::endl;
+  _out << "pfIsoId = " << pfIsoId << std::endl;
+  _out << "tkIsoId = " << tkIsoId << std::endl;
   _out << "inTimeMuon = " << inTimeMuon << std::endl;
   _out << "isGlobal = " << isGlobal << std::endl;
   _out << "isTracker = " << isTracker << std::endl;

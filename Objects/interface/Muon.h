@@ -47,16 +47,18 @@ namespace panda {
       Bool_t* isPFcand{0};
       */
       Float_t* pfRelIso04_all{0};
+      Float_t* pfRelIso03_all{0};
+      Float_t* pfRelIso03_chg{0};
       Float_t* ptErr{0};
       Float_t* segmentComp{0};
       Int_t* nStations{0};
       Int_t* nTrackerLayers{0};
       UChar_t* highPtId{0};
-      UChar_t* miniIsoId{0};
+      Int_t* miniIsoId{0};
       UChar_t* multiIsoId{0};
-      UChar_t* mvaId{0};
-      UChar_t* pfIsoId{0};
-      UChar_t* tkIsoId{0};
+      Int_t* mvaId{0};
+      Int_t* pfIsoId{0};
+      Int_t* tkIsoId{0};
       Bool_t* inTimeMuon{0};
       Bool_t* isGlobal{0};
       Bool_t* isTracker{0};
@@ -126,16 +128,18 @@ namespace panda {
     Bool_t& isPFcand;
     */
     Float_t& pfRelIso04_all;
+    Float_t& pfRelIso03_all;
+    Float_t& pfRelIso03_chg;
     Float_t& ptErr;
     Float_t& segmentComp;
     Int_t& nStations;
     Int_t& nTrackerLayers;
     UChar_t& highPtId;
-    UChar_t& miniIsoId;
+    Int_t& miniIsoId;
     UChar_t& multiIsoId;
-    UChar_t& mvaId;
-    UChar_t& pfIsoId;
-    UChar_t& tkIsoId;
+    Int_t& mvaId;
+    Int_t& pfIsoId;
+    Int_t& tkIsoId;
     Bool_t& inTimeMuon;
     Bool_t& isGlobal;
     Bool_t& isTracker;

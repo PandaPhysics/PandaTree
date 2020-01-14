@@ -77,6 +77,7 @@ status/I
 statusFlags/I
 genPartFlav/b
 genPartIdxMother/I
+idx/I
 
 [GenJet>Particle]
 partonFlavour/I
@@ -164,16 +165,18 @@ photonIdx/I
 
 [Muon>Lepton]
 pfRelIso04_all/F
+pfRelIso03_all/F
+pfRelIso03_chg/F
 ptErr/F
 segmentComp/F
 nStations/I
 nTrackerLayers/I
 highPtId/b
-miniIsoId/b
+miniIsoId/I
 multiIsoId/b
-mvaId/b
-pfIsoId/b
-tkIsoId/b
+mvaId/I
+pfIsoId/I
+tkIsoId/I
 inTimeMuon/O
 isGlobal/O
 isTracker/O

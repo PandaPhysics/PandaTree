@@ -278,6 +278,7 @@ panda::utils::getStatus(TTree& _tree, TString const& _objName, BranchName const&
 
   // -1 -> branch does not exist; 0 -> status is already set; 1 -> status is different
   Int_t returnCode(checkStatus(_tree, fullName, true));
+  std::cout << "test name= " << fullName << "\n status=" << returnCode << "\n";
   if (returnCode == 0)
     return BranchName(fullName);
   else

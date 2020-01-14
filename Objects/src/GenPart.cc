@@ -6,7 +6,7 @@ panda::GenPart::getListOfBranches()
 {
   utils::BranchList blist;
   blist += Particle::getListOfBranches();
-  blist += {"pdgId", "status", "statusFlags", "genPartFlav", "genPartIdxMother"};
+  blist += {"pdgId", "status", "statusFlags", "genPartFlav", "genPartIdxMother", "idx"};
   return blist;
 }
 
@@ -20,6 +20,7 @@ panda::GenPart::datastore::allocate(UInt_t _nmax)
   statusFlags = new Int_t[nmax_];
   genPartFlav = new UChar_t[nmax_];
   genPartIdxMother = new Int_t[nmax_];
+  idx = new Int_t[nmax_];
 }
 
 void
@@ -37,6 +38,8 @@ panda::GenPart::datastore::deallocate()
   genPartFlav = 0;
   delete [] genPartIdxMother;
   genPartIdxMother = 0;
+  delete [] idx;
+  idx = 0;
 }
 
 void
@@ -49,6 +52,7 @@ panda::GenPart::datastore::setStatus(TTree& _tree, TString const& _name, utils::
   utils::setStatus(_tree, _name, "statusFlags", _branches);
   utils::setStatus(_tree, _name, "genPartFlav", _branches);
   utils::setStatus(_tree, _name, "genPartIdxMother", _branches);
+  utils::setStatus(_tree, _name, "idx", _branches);
 }
 
 panda::utils::BranchList
@@ -61,6 +65,7 @@ panda::GenPart::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "statusFlags"));
   blist.push_back(utils::getStatus(_tree, _name, "genPartFlav"));
   blist.push_back(utils::getStatus(_tree, _name, "genPartIdxMother"));
+  blist.push_back(utils::getStatus(_tree, _name, "idx"));
 
   return blist;
 }
@@ -75,6 +80,7 @@ panda::GenPart::datastore::setAddress(TTree& _tree, TString const& _name, utils:
   utils::setAddress(_tree, _name, "statusFlags", statusFlags, _branches, _setStatus);
   utils::setAddress(_tree, _name, "genPartFlav", genPartFlav, _branches, _setStatus);
   utils::setAddress(_tree, _name, "genPartIdxMother", genPartIdxMother, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "idx", idx, _branches, _setStatus);
 }
 
 void
@@ -89,6 +95,7 @@ panda::GenPart::datastore::book(TTree& _tree, TString const& _name, utils::Branc
   utils::book(_tree, _name, "statusFlags", size, 'I', statusFlags, _branches);
   utils::book(_tree, _name, "genPartFlav", size, 'b', genPartFlav, _branches);
   utils::book(_tree, _name, "genPartIdxMother", size, 'I', genPartIdxMother, _branches);
+  utils::book(_tree, _name, "idx", size, 'I', idx, _branches);
 }
 
 void
@@ -101,6 +108,7 @@ panda::GenPart::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "statusFlags");
   utils::resetAddress(_tree, _name, "genPartFlav");
   utils::resetAddress(_tree, _name, "genPartIdxMother");
+  utils::resetAddress(_tree, _name, "idx");
 }
 
 void
@@ -123,7 +131,8 @@ panda::GenPart::GenPart(char const* _name/* = ""*/) :
   status(gStore.getData(this).status[0]),
   statusFlags(gStore.getData(this).statusFlags[0]),
   genPartFlav(gStore.getData(this).genPartFlav[0]),
-  genPartIdxMother(gStore.getData(this).genPartIdxMother[0])
+  genPartIdxMother(gStore.getData(this).genPartIdxMother[0]),
+  idx(gStore.getData(this).idx[0])
 {
 }
 
@@ -133,7 +142,8 @@ panda::GenPart::GenPart(GenPart const& _src) :
   status(gStore.getData(this).status[0]),
   statusFlags(gStore.getData(this).statusFlags[0]),
   genPartFlav(gStore.getData(this).genPartFlav[0]),
-  genPartIdxMother(gStore.getData(this).genPartIdxMother[0])
+  genPartIdxMother(gStore.getData(this).genPartIdxMother[0]),
+  idx(gStore.getData(this).idx[0])
 {
   operator=(_src);
 }
@@ -144,7 +154,8 @@ panda::GenPart::GenPart(datastore& _data, UInt_t _idx) :
   status(_data.status[_idx]),
   statusFlags(_data.statusFlags[_idx]),
   genPartFlav(_data.genPartFlav[_idx]),
-  genPartIdxMother(_data.genPartIdxMother[_idx])
+  genPartIdxMother(_data.genPartIdxMother[_idx]),
+  idx(_data.idx[_idx])
 {
 }
 
@@ -154,7 +165,8 @@ panda::GenPart::GenPart(ArrayBase* _array) :
   status(gStore.getData(this).status[0]),
   statusFlags(gStore.getData(this).statusFlags[0]),
   genPartFlav(gStore.getData(this).genPartFlav[0]),
-  genPartIdxMother(gStore.getData(this).genPartIdxMother[0])
+  genPartIdxMother(gStore.getData(this).genPartIdxMother[0]),
+  idx(gStore.getData(this).idx[0])
 {
 }
 
@@ -183,6 +195,7 @@ panda::GenPart::operator=(GenPart const& _src)
   statusFlags = _src.statusFlags;
   genPartFlav = _src.genPartFlav;
   genPartIdxMother = _src.genPartIdxMother;
+  idx = _src.idx;
 
   /* BEGIN CUSTOM GenPart.cc.operator= */
   /* END CUSTOM */
@@ -200,6 +213,7 @@ panda::GenPart::doBook_(TTree& _tree, TString const& _name, utils::BranchList co
   utils::book(_tree, _name, "statusFlags", "", 'I', &statusFlags, _branches);
   utils::book(_tree, _name, "genPartFlav", "", 'b', &genPartFlav, _branches);
   utils::book(_tree, _name, "genPartIdxMother", "", 'I', &genPartIdxMother, _branches);
+  utils::book(_tree, _name, "idx", "", 'I', &idx, _branches);
 }
 
 void
@@ -212,6 +226,7 @@ panda::GenPart::doInit_()
   statusFlags = 0;
   genPartFlav = 0;
   genPartIdxMother = 0;
+  idx = 0;
 
   /* BEGIN CUSTOM GenPart.cc.doInit_ */
   /* END CUSTOM */
@@ -235,6 +250,7 @@ panda::GenPart::dump(std::ostream& _out/* = std::cout*/) const
   _out << "statusFlags = " << statusFlags << std::endl;
   _out << "genPartFlav = " << static_cast<const UInt_t>(genPartFlav) << std::endl;
   _out << "genPartIdxMother = " << genPartIdxMother << std::endl;
+  _out << "idx = " << idx << std::endl;
 }
 
 /* BEGIN CUSTOM GenPart.cc.global */
