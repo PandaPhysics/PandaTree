@@ -86,9 +86,7 @@ namespace panda {
       Int_t* vidNestedWPBitmapSpring15{0};
       Int_t* vidNestedWPBitmapSum16{0};
       Int_t* cutBased_Fall17_V1{0};
-      Int_t* cutBased_HLTPreSel{0};
-      Int_t* cutBased_Spring15{0};
-      Int_t* cutBased_Sum16{0};
+      Int_t* cutBased{0};
       Bool_t* cutBased_HEEP{0};
       Bool_t* convVeto{0};
       UChar_t* lostHits{0};
@@ -191,9 +189,7 @@ namespace panda {
     Int_t& vidNestedWPBitmapSpring15;
     Int_t& vidNestedWPBitmapSum16;
     Int_t& cutBased_Fall17_V1;
-    Int_t& cutBased_HLTPreSel;
-    Int_t& cutBased_Spring15;
-    Int_t& cutBased_Sum16;
+    Int_t& cutBased;
     Bool_t& cutBased_HEEP;
     Bool_t& convVeto;
     UChar_t& lostHits;

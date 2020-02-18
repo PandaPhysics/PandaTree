@@ -1,5 +1,5 @@
-#ifndef PandaTree_Objects_GenPart_h
-#define PandaTree_Objects_GenPart_h
+#ifndef PandaTree_Objects_CorrT1METJet_h
+#define PandaTree_Objects_CorrT1METJet_h
 #include "Constants.h"
 #include "Particle.h"
 #include "../../Framework/interface/Array.h"
@@ -9,7 +9,7 @@
 
 namespace panda {
 
-  class GenPart : public Particle {
+  class CorrT1METJet : public Particle {
   public:
     struct datastore : public Particle::datastore {
       datastore() : Particle::datastore() {}
@@ -21,11 +21,9 @@ namespace panda {
       Float_t* phi{0};
       Float_t* mass{0};
       */
-      Int_t* pdgId{0};
-      Int_t* status{0};
-      Int_t* statusFlags{0};
-      UChar_t* genPartFlav{0};
-      Int_t* genPartIdxMother{0};
+      Float_t* area{0};
+      Float_t* muonSubtrFactor{0};
+      Float_t* rawPt{0};
 
       void allocate(UInt_t n) override;
       void deallocate() override;
@@ -38,18 +36,18 @@ namespace panda {
       void resizeVectors_(UInt_t) override;
     };
 
-    typedef Array<GenPart> array_type;
-    typedef Collection<GenPart> collection_type;
+    typedef Array<CorrT1METJet> array_type;
+    typedef Collection<CorrT1METJet> collection_type;
 
     typedef Particle base_type;
 
-    GenPart(char const* name = "");
-    GenPart(GenPart const&);
-    GenPart(datastore&, UInt_t idx);
-    ~GenPart();
-    GenPart& operator=(GenPart const&);
+    CorrT1METJet(char const* name = "");
+    CorrT1METJet(CorrT1METJet const&);
+    CorrT1METJet(datastore&, UInt_t idx);
+    ~CorrT1METJet();
+    CorrT1METJet& operator=(CorrT1METJet const&);
 
-    static char const* typeName() { return "GenPart"; }
+    static char const* typeName() { return "CorrT1METJet"; }
 
     void print(std::ostream& = std::cout, UInt_t level = 1) const override;
     void dump(std::ostream& = std::cout) const override;
@@ -60,13 +58,11 @@ namespace panda {
     Float_t& phi;
     Float_t& mass;
     */
-    Int_t& pdgId;
-    Int_t& status;
-    Int_t& statusFlags;
-    UChar_t& genPartFlav;
-    Int_t& genPartIdxMother;
+    Float_t& area;
+    Float_t& muonSubtrFactor;
+    Float_t& rawPt;
 
-    /* BEGIN CUSTOM GenPart.h.classdef */
+    /* BEGIN CUSTOM CorrT1METJet.h.classdef */
     /* END CUSTOM */
 
     static utils::BranchList getListOfBranches();
@@ -74,18 +70,18 @@ namespace panda {
     void destructor(Bool_t recursive = kFALSE);
 
   protected:
-    GenPart(ArrayBase*);
+    CorrT1METJet(ArrayBase*);
 
     void doBook_(TTree&, TString const&, utils::BranchList const& = {"*"}) override;
     void doInit_() override;
   };
 
-  typedef Array<GenPart> GenPartArray;
-  typedef Collection<GenPart> GenPartCollection;
-  typedef Ref<GenPart> GenPartRef;
-  typedef RefVector<GenPart> GenPartRefVector;
+  typedef Array<CorrT1METJet> CorrT1METJetArray;
+  typedef Collection<CorrT1METJet> CorrT1METJetCollection;
+  typedef Ref<CorrT1METJet> CorrT1METJetRef;
+  typedef RefVector<CorrT1METJet> CorrT1METJetRefVector;
 
-  /* BEGIN CUSTOM GenPart.h.global */
+  /* BEGIN CUSTOM CorrT1METJet.h.global */
   /* END CUSTOM */
 
 }

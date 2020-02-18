@@ -6,7 +6,7 @@ panda::Muon::getListOfBranches()
 {
   utils::BranchList blist;
   blist += Lepton::getListOfBranches();
-  blist += {"pfRelIso04_all", "pfRelIso03_all", "pfRelIso03_chg", "ptErr", "segmentComp", "nStations", "nTrackerLayers", "highPtId", "miniIsoId", "multiIsoId", "mvaId", "pfIsoId", "tkIsoId", "inTimeMuon", "isGlobal", "isTracker", "mediumId", "mediumPromptId", "softId", "softMvaId", "tightId", "triggerIdLoose"};
+  blist += {"pfRelIso04_all", "pfRelIso03_all", "pfRelIso03_chg", "ptErr", "segmentComp", "nStations", "nTrackerLayers", "highPtId", "miniIsoId", "multiIsoId", "mvaId", "pfIsoId", "tkIsoId", "inTimeMuon", "isGlobal", "isTracker", "looseId", "mediumId", "mediumPromptId", "softId", "softMvaId", "tightId", "triggerIdLoose"};
   return blist;
 }
 
@@ -25,12 +25,13 @@ panda::Muon::datastore::allocate(UInt_t _nmax)
   highPtId = new UChar_t[nmax_];
   miniIsoId = new Int_t[nmax_];
   multiIsoId = new UChar_t[nmax_];
-  mvaId = new Int_t[nmax_];
+  mvaId = new UInt_t[nmax_];
   pfIsoId = new Int_t[nmax_];
   tkIsoId = new Int_t[nmax_];
   inTimeMuon = new Bool_t[nmax_];
   isGlobal = new Bool_t[nmax_];
   isTracker = new Bool_t[nmax_];
+  looseId = new Bool_t[nmax_];
   mediumId = new Bool_t[nmax_];
   mediumPromptId = new Bool_t[nmax_];
   softId = new Bool_t[nmax_];
@@ -76,6 +77,8 @@ panda::Muon::datastore::deallocate()
   isGlobal = 0;
   delete [] isTracker;
   isTracker = 0;
+  delete [] looseId;
+  looseId = 0;
   delete [] mediumId;
   mediumId = 0;
   delete [] mediumPromptId;
@@ -111,6 +114,7 @@ panda::Muon::datastore::setStatus(TTree& _tree, TString const& _name, utils::Bra
   utils::setStatus(_tree, _name, "inTimeMuon", _branches);
   utils::setStatus(_tree, _name, "isGlobal", _branches);
   utils::setStatus(_tree, _name, "isTracker", _branches);
+  utils::setStatus(_tree, _name, "looseId", _branches);
   utils::setStatus(_tree, _name, "mediumId", _branches);
   utils::setStatus(_tree, _name, "mediumPromptId", _branches);
   utils::setStatus(_tree, _name, "softId", _branches);
@@ -140,6 +144,7 @@ panda::Muon::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "inTimeMuon"));
   blist.push_back(utils::getStatus(_tree, _name, "isGlobal"));
   blist.push_back(utils::getStatus(_tree, _name, "isTracker"));
+  blist.push_back(utils::getStatus(_tree, _name, "looseId"));
   blist.push_back(utils::getStatus(_tree, _name, "mediumId"));
   blist.push_back(utils::getStatus(_tree, _name, "mediumPromptId"));
   blist.push_back(utils::getStatus(_tree, _name, "softId"));
@@ -171,6 +176,7 @@ panda::Muon::datastore::setAddress(TTree& _tree, TString const& _name, utils::Br
   utils::setAddress(_tree, _name, "inTimeMuon", inTimeMuon, _branches, _setStatus);
   utils::setAddress(_tree, _name, "isGlobal", isGlobal, _branches, _setStatus);
   utils::setAddress(_tree, _name, "isTracker", isTracker, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "looseId", looseId, _branches, _setStatus);
   utils::setAddress(_tree, _name, "mediumId", mediumId, _branches, _setStatus);
   utils::setAddress(_tree, _name, "mediumPromptId", mediumPromptId, _branches, _setStatus);
   utils::setAddress(_tree, _name, "softId", softId, _branches, _setStatus);
@@ -196,12 +202,13 @@ panda::Muon::datastore::book(TTree& _tree, TString const& _name, utils::BranchLi
   utils::book(_tree, _name, "highPtId", size, 'b', highPtId, _branches);
   utils::book(_tree, _name, "miniIsoId", size, 'I', miniIsoId, _branches);
   utils::book(_tree, _name, "multiIsoId", size, 'b', multiIsoId, _branches);
-  utils::book(_tree, _name, "mvaId", size, 'I', mvaId, _branches);
+  utils::book(_tree, _name, "mvaId", size, 'i', mvaId, _branches);
   utils::book(_tree, _name, "pfIsoId", size, 'I', pfIsoId, _branches);
   utils::book(_tree, _name, "tkIsoId", size, 'I', tkIsoId, _branches);
   utils::book(_tree, _name, "inTimeMuon", size, 'O', inTimeMuon, _branches);
   utils::book(_tree, _name, "isGlobal", size, 'O', isGlobal, _branches);
   utils::book(_tree, _name, "isTracker", size, 'O', isTracker, _branches);
+  utils::book(_tree, _name, "looseId", size, 'O', looseId, _branches);
   utils::book(_tree, _name, "mediumId", size, 'O', mediumId, _branches);
   utils::book(_tree, _name, "mediumPromptId", size, 'O', mediumPromptId, _branches);
   utils::book(_tree, _name, "softId", size, 'O', softId, _branches);
@@ -231,6 +238,7 @@ panda::Muon::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "inTimeMuon");
   utils::resetAddress(_tree, _name, "isGlobal");
   utils::resetAddress(_tree, _name, "isTracker");
+  utils::resetAddress(_tree, _name, "looseId");
   utils::resetAddress(_tree, _name, "mediumId");
   utils::resetAddress(_tree, _name, "mediumPromptId");
   utils::resetAddress(_tree, _name, "softId");
@@ -271,6 +279,7 @@ panda::Muon::Muon(char const* _name/* = ""*/) :
   inTimeMuon(gStore.getData(this).inTimeMuon[0]),
   isGlobal(gStore.getData(this).isGlobal[0]),
   isTracker(gStore.getData(this).isTracker[0]),
+  looseId(gStore.getData(this).looseId[0]),
   mediumId(gStore.getData(this).mediumId[0]),
   mediumPromptId(gStore.getData(this).mediumPromptId[0]),
   softId(gStore.getData(this).softId[0]),
@@ -298,6 +307,7 @@ panda::Muon::Muon(Muon const& _src) :
   inTimeMuon(gStore.getData(this).inTimeMuon[0]),
   isGlobal(gStore.getData(this).isGlobal[0]),
   isTracker(gStore.getData(this).isTracker[0]),
+  looseId(gStore.getData(this).looseId[0]),
   mediumId(gStore.getData(this).mediumId[0]),
   mediumPromptId(gStore.getData(this).mediumPromptId[0]),
   softId(gStore.getData(this).softId[0]),
@@ -326,6 +336,7 @@ panda::Muon::Muon(datastore& _data, UInt_t _idx) :
   inTimeMuon(_data.inTimeMuon[_idx]),
   isGlobal(_data.isGlobal[_idx]),
   isTracker(_data.isTracker[_idx]),
+  looseId(_data.looseId[_idx]),
   mediumId(_data.mediumId[_idx]),
   mediumPromptId(_data.mediumPromptId[_idx]),
   softId(_data.softId[_idx]),
@@ -353,6 +364,7 @@ panda::Muon::Muon(ArrayBase* _array) :
   inTimeMuon(gStore.getData(this).inTimeMuon[0]),
   isGlobal(gStore.getData(this).isGlobal[0]),
   isTracker(gStore.getData(this).isTracker[0]),
+  looseId(gStore.getData(this).looseId[0]),
   mediumId(gStore.getData(this).mediumId[0]),
   mediumPromptId(gStore.getData(this).mediumPromptId[0]),
   softId(gStore.getData(this).softId[0]),
@@ -398,6 +410,7 @@ panda::Muon::operator=(Muon const& _src)
   inTimeMuon = _src.inTimeMuon;
   isGlobal = _src.isGlobal;
   isTracker = _src.isTracker;
+  looseId = _src.looseId;
   mediumId = _src.mediumId;
   mediumPromptId = _src.mediumPromptId;
   softId = _src.softId;
@@ -426,12 +439,13 @@ panda::Muon::doBook_(TTree& _tree, TString const& _name, utils::BranchList const
   utils::book(_tree, _name, "highPtId", "", 'b', &highPtId, _branches);
   utils::book(_tree, _name, "miniIsoId", "", 'I', &miniIsoId, _branches);
   utils::book(_tree, _name, "multiIsoId", "", 'b', &multiIsoId, _branches);
-  utils::book(_tree, _name, "mvaId", "", 'I', &mvaId, _branches);
+  utils::book(_tree, _name, "mvaId", "", 'i', &mvaId, _branches);
   utils::book(_tree, _name, "pfIsoId", "", 'I', &pfIsoId, _branches);
   utils::book(_tree, _name, "tkIsoId", "", 'I', &tkIsoId, _branches);
   utils::book(_tree, _name, "inTimeMuon", "", 'O', &inTimeMuon, _branches);
   utils::book(_tree, _name, "isGlobal", "", 'O', &isGlobal, _branches);
   utils::book(_tree, _name, "isTracker", "", 'O', &isTracker, _branches);
+  utils::book(_tree, _name, "looseId", "", 'O', &looseId, _branches);
   utils::book(_tree, _name, "mediumId", "", 'O', &mediumId, _branches);
   utils::book(_tree, _name, "mediumPromptId", "", 'O', &mediumPromptId, _branches);
   utils::book(_tree, _name, "softId", "", 'O', &softId, _branches);
@@ -461,6 +475,7 @@ panda::Muon::doInit_()
   inTimeMuon = false;
   isGlobal = false;
   isTracker = false;
+  looseId = false;
   mediumId = false;
   mediumPromptId = false;
   softId = false;
@@ -501,6 +516,7 @@ panda::Muon::dump(std::ostream& _out/* = std::cout*/) const
   _out << "inTimeMuon = " << inTimeMuon << std::endl;
   _out << "isGlobal = " << isGlobal << std::endl;
   _out << "isTracker = " << isTracker << std::endl;
+  _out << "looseId = " << looseId << std::endl;
   _out << "mediumId = " << mediumId << std::endl;
   _out << "mediumPromptId = " << mediumPromptId << std::endl;
   _out << "softId = " << softId << std::endl;

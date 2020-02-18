@@ -6,6 +6,7 @@
 #include "GenPart.h"
 #include "Electron.h"
 #include "Muon.h"
+#include "Tau.h"
 #include "Jet.h"
 #include "Photon.h"
 #include "SecondaryVertex.h"
@@ -18,6 +19,10 @@
 #include "RecoMet.h"
 #include "Triggers.h"
 #include "BReweight.h"
+#include "CorrT1METJet.h"
+#include "TrigObj.h"
+#include "Lhe.h"
+#include "Piles.h"
 
 namespace panda {
 
@@ -35,16 +40,17 @@ namespace panda {
     GenPartCollection GenPart = GenPartCollection("GenPart", 256);
     ElectronCollection Electron = ElectronCollection("Electron", 16);
     MuonCollection Muon = MuonCollection("Muon", 16);
+    TauCollection Tau = TauCollection("Tau", 16);
     JetCollection Jet = JetCollection("Jet", 32);
     PhotonCollection Photon = PhotonCollection("Photon", 16);
     SecondaryVertexCollection SV = SecondaryVertexCollection("SV", 32);
     FatJetCollection FatJet = FatJetCollection("FatJet", 8);
     SubJetCollection SubJet = SubJetCollection("SubJet", 64);
     GenJetCollection GenJet = GenJetCollection("GenJet", 64);
-    WeightCollection LHEPdfWeight = WeightCollection("LHEPdfWeight", 16);
-    WeightCollection LHEReweightingWeight = WeightCollection("LHEReweightingWeight", 16);
-    WeightCollection LHEScaleWeight = WeightCollection("LHEScaleWeight", 16);
-    WeightCollection PSWeight = WeightCollection("PSWeight", 16);
+    WeightCollection LHEPdfWeight = WeightCollection("LHEPdfWeight", 128);
+    WeightCollection LHEReweightingWeight = WeightCollection("LHEReweightingWeight", 128);
+    WeightCollection LHEScaleWeight = WeightCollection("LHEScaleWeight", 64);
+    WeightCollection PSWeight = WeightCollection("PSWeight", 64);
     PrimaryVertex PV = PrimaryVertex("PV");
     Met GenMET = Met("GenMET");
     RecoMet CaloMET = RecoMet("CaloMET");
@@ -55,10 +61,17 @@ namespace panda {
     RecoMet TkMET = RecoMet("TkMET");
     Triggers HLT = Triggers("HLT");
     BReweight btagWeight = BReweight("btagWeight");
+    CorrT1METJetCollection CorrT1METJet = CorrT1METJetCollection("CorrT1METJet", 32);
+    TrigObjCollection TrigObj = TrigObjCollection("TrigObj", 512);
+    Lhe LHE = Lhe("LHE");
+    Piles Pileup = Piles("Pileup");
 
     UInt_t run{};
     UInt_t luminosityBlock{};
     ULong64_t event{};
+    Int_t nLHEPdfWeight{};
+    Int_t nLHEScaleWeight{};
+    Int_t nLHEReweightingWeight{};
     Float_t fixedGridRhoFastjetAll{};
     Float_t fixedGridRhoFastjetCentralCalo{};
     Float_t fixedGridRhoFastjetCentralNeutral{};

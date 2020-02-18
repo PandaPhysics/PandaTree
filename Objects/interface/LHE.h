@@ -1,7 +1,7 @@
-#ifndef PandaTree_Objects_RecoMet_h
-#define PandaTree_Objects_RecoMet_h
+#ifndef PandaTree_Objects_LHE_h
+#define PandaTree_Objects_LHE_h
 #include "Constants.h"
-#include "Met.h"
+#include "../../Framework/interface/Singlet.h"
 #include "../../Framework/interface/Array.h"
 #include "../../Framework/interface/Collection.h"
 #include "../../Framework/interface/Ref.h"
@@ -9,28 +9,25 @@
 
 namespace panda {
 
-  class RecoMet : public Met {
+  class LHE : public Singlet {
   public:
-    typedef Met base_type;
+    typedef Singlet base_type;
 
-    RecoMet(char const* name = "");
-    RecoMet(RecoMet const&);
-    ~RecoMet();
-    RecoMet& operator=(RecoMet const&);
+    LHE(char const* name = "");
+    LHE(LHE const&);
+    ~LHE();
+    LHE& operator=(LHE const&);
 
-    static char const* typeName() { return "RecoMet"; }
+    static char const* typeName() { return "LHE"; }
 
     void print(std::ostream& = std::cout, UInt_t level = 1) const override;
     void dump(std::ostream& = std::cout) const override;
 
-    /* Met
-    Float_t pt{};
-    Float_t phi{};
-    */
-    Float_t sumEt{};
-    Float_t significance{};
+    Float_t HT{};
+    Float_t Vpt{};
+    Int_t Njets{};
 
-    /* BEGIN CUSTOM RecoMet.h.classdef */
+    /* BEGIN CUSTOM LHE.h.classdef */
     /* END CUSTOM */
 
     static utils::BranchList getListOfBranches();
@@ -44,7 +41,7 @@ namespace panda {
     void doInit_() override;
   };
 
-  /* BEGIN CUSTOM RecoMet.h.global */
+  /* BEGIN CUSTOM LHE.h.global */
   /* END CUSTOM */
 
 }

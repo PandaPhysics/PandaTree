@@ -1,8 +1,7 @@
-#ifndef PandaTree_Objects_Photon_h
-#define PandaTree_Objects_Photon_h
+#ifndef PandaTree_Objects_Tau_h
+#define PandaTree_Objects_Tau_h
 #include "Constants.h"
 #include "PFParticle.h"
-#include "EGamma.h"
 #include "../../Framework/interface/Array.h"
 #include "../../Framework/interface/Collection.h"
 #include "../../Framework/interface/Ref.h"
@@ -10,10 +9,10 @@
 
 namespace panda {
 
-  class Photon : public PFParticle, public EGamma {
+  class Tau : public PFParticle {
   public:
-    struct datastore : public PFParticle::datastore, public EGamma::datastore {
-      datastore() : PFParticle::datastore(), EGamma::datastore() {}
+    struct datastore : public PFParticle::datastore {
+      datastore() : PFParticle::datastore() {}
       ~datastore() { deallocate(); }
 
       /* Particle
@@ -31,28 +30,22 @@ namespace panda {
       Int_t* jetIdx{0};
       Int_t* genPartIdx{0};
       */
-      /* EGamma
-      Float_t* eCorr{0};
-      Float_t* eInvMinusPInv{0};
-      Float_t* energyErr{0};
-      Float_t* hoe{0};
-      Float_t* r9{0};
-      Float_t* sieie{0};
-      Int_t* cutBased{0};
-      Int_t* vidNestedWPBitmap{0};
-      */
-      Float_t* mvaID{0};
-      Float_t* mvaIDV1{0};
-      Float_t* pfRelIso03_all{0};
-      Float_t* pfRelIso03_chg{0};
-      Bool_t* mvaID_WP80{0};
-      Bool_t* mvaID_WP90{0};
-      Bool_t* isScEtaEB{0};
-      Bool_t* isScEtaEE{0};
-      Bool_t* pixelSeed{0};
-      Bool_t* electronVeto{0};
-      Int_t* electronIdx{0};
-      Int_t* cutBasedBitmap{0};
+      Int_t* decayMode{0};
+      Bool_t* idDecayMode{0};
+      Bool_t* idDecayModeNewDMs{0};
+      UInt_t* idMVAoldDM2017v2{0};
+      Float_t* leadTkPtOverTauPt{0};
+      Float_t* leadTkDeltaEta{0};
+      Float_t* leadTkDeltaPhi{0};
+      Float_t* dxy{0};
+      Float_t* dz{0};
+      Float_t* rawIso{0};
+      Float_t* rawIsodR03{0};
+      Float_t* chargedIso{0};
+      Float_t* neutralIso{0};
+      Float_t* puCorr{0};
+      Float_t* photonsOutsideSignalCone{0};
+      Int_t* idMVAnewDM2017v2{0};
 
       void allocate(UInt_t n) override;
       void deallocate() override;
@@ -65,18 +58,18 @@ namespace panda {
       void resizeVectors_(UInt_t) override;
     };
 
-    typedef Array<Photon> array_type;
-    typedef Collection<Photon> collection_type;
+    typedef Array<Tau> array_type;
+    typedef Collection<Tau> collection_type;
 
     typedef PFParticle base_type;
 
-    Photon(char const* name = "");
-    Photon(Photon const&);
-    Photon(datastore&, UInt_t idx);
-    ~Photon();
-    Photon& operator=(Photon const&);
+    Tau(char const* name = "");
+    Tau(Tau const&);
+    Tau(datastore&, UInt_t idx);
+    ~Tau();
+    Tau& operator=(Tau const&);
 
-    static char const* typeName() { return "Photon"; }
+    static char const* typeName() { return "Tau"; }
 
     void print(std::ostream& = std::cout, UInt_t level = 1) const override;
     void dump(std::ostream& = std::cout) const override;
@@ -96,30 +89,24 @@ namespace panda {
     Int_t& jetIdx;
     Int_t& genPartIdx;
     */
-    /* EGamma
-    Float_t& eCorr;
-    Float_t& eInvMinusPInv;
-    Float_t& energyErr;
-    Float_t& hoe;
-    Float_t& r9;
-    Float_t& sieie;
-    Int_t& cutBased;
-    Int_t& vidNestedWPBitmap;
-    */
-    Float_t& mvaID;
-    Float_t& mvaIDV1;
-    Float_t& pfRelIso03_all;
-    Float_t& pfRelIso03_chg;
-    Bool_t& mvaID_WP80;
-    Bool_t& mvaID_WP90;
-    Bool_t& isScEtaEB;
-    Bool_t& isScEtaEE;
-    Bool_t& pixelSeed;
-    Bool_t& electronVeto;
-    Int_t& electronIdx;
-    Int_t& cutBasedBitmap;
+    Int_t& decayMode;
+    Bool_t& idDecayMode;
+    Bool_t& idDecayModeNewDMs;
+    UInt_t& idMVAoldDM2017v2;
+    Float_t& leadTkPtOverTauPt;
+    Float_t& leadTkDeltaEta;
+    Float_t& leadTkDeltaPhi;
+    Float_t& dxy;
+    Float_t& dz;
+    Float_t& rawIso;
+    Float_t& rawIsodR03;
+    Float_t& chargedIso;
+    Float_t& neutralIso;
+    Float_t& puCorr;
+    Float_t& photonsOutsideSignalCone;
+    Int_t& idMVAnewDM2017v2;
 
-    /* BEGIN CUSTOM Photon.h.classdef */
+    /* BEGIN CUSTOM Tau.h.classdef */
     /* END CUSTOM */
 
     static utils::BranchList getListOfBranches();
@@ -127,18 +114,18 @@ namespace panda {
     void destructor(Bool_t recursive = kFALSE);
 
   protected:
-    Photon(ArrayBase*);
+    Tau(ArrayBase*);
 
     void doBook_(TTree&, TString const&, utils::BranchList const& = {"*"}) override;
     void doInit_() override;
   };
 
-  typedef Array<Photon> PhotonArray;
-  typedef Collection<Photon> PhotonCollection;
-  typedef Ref<Photon> PhotonRef;
-  typedef RefVector<Photon> PhotonRefVector;
+  typedef Array<Tau> TauArray;
+  typedef Collection<Tau> TauCollection;
+  typedef Ref<Tau> TauRef;
+  typedef RefVector<Tau> TauRefVector;
 
-  /* BEGIN CUSTOM Photon.h.global */
+  /* BEGIN CUSTOM Tau.h.global */
   /* END CUSTOM */
 
 }

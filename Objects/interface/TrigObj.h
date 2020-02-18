@@ -1,7 +1,7 @@
-#ifndef PandaTree_Objects_GenPart_h
-#define PandaTree_Objects_GenPart_h
+#ifndef PandaTree_Objects_TrigObj_h
+#define PandaTree_Objects_TrigObj_h
 #include "Constants.h"
-#include "Particle.h"
+#include "../../Framework/interface/Element.h"
 #include "../../Framework/interface/Array.h"
 #include "../../Framework/interface/Collection.h"
 #include "../../Framework/interface/Ref.h"
@@ -9,23 +9,22 @@
 
 namespace panda {
 
-  class GenPart : public Particle {
+  class TrigObj : public Element {
   public:
-    struct datastore : public Particle::datastore {
-      datastore() : Particle::datastore() {}
+    struct datastore : public Element::datastore {
+      datastore() : Element::datastore() {}
       ~datastore() { deallocate(); }
 
-      /* Particle
+      Int_t* filterBits{0};
+      Int_t* id{0};
+      Int_t* l1charge{0};
+      Int_t* l1iso{0};
+      Float_t* l1pt{0};
+      Float_t* l1pt_2{0};
+      Float_t* l2pt{0};
       Float_t* pt{0};
       Float_t* eta{0};
       Float_t* phi{0};
-      Float_t* mass{0};
-      */
-      Int_t* pdgId{0};
-      Int_t* status{0};
-      Int_t* statusFlags{0};
-      UChar_t* genPartFlav{0};
-      Int_t* genPartIdxMother{0};
 
       void allocate(UInt_t n) override;
       void deallocate() override;
@@ -38,35 +37,34 @@ namespace panda {
       void resizeVectors_(UInt_t) override;
     };
 
-    typedef Array<GenPart> array_type;
-    typedef Collection<GenPart> collection_type;
+    typedef Array<TrigObj> array_type;
+    typedef Collection<TrigObj> collection_type;
 
-    typedef Particle base_type;
+    typedef Element base_type;
 
-    GenPart(char const* name = "");
-    GenPart(GenPart const&);
-    GenPart(datastore&, UInt_t idx);
-    ~GenPart();
-    GenPart& operator=(GenPart const&);
+    TrigObj(char const* name = "");
+    TrigObj(TrigObj const&);
+    TrigObj(datastore&, UInt_t idx);
+    ~TrigObj();
+    TrigObj& operator=(TrigObj const&);
 
-    static char const* typeName() { return "GenPart"; }
+    static char const* typeName() { return "TrigObj"; }
 
     void print(std::ostream& = std::cout, UInt_t level = 1) const override;
     void dump(std::ostream& = std::cout) const override;
 
-    /* Particle
+    Int_t& filterBits;
+    Int_t& id;
+    Int_t& l1charge;
+    Int_t& l1iso;
+    Float_t& l1pt;
+    Float_t& l1pt_2;
+    Float_t& l2pt;
     Float_t& pt;
     Float_t& eta;
     Float_t& phi;
-    Float_t& mass;
-    */
-    Int_t& pdgId;
-    Int_t& status;
-    Int_t& statusFlags;
-    UChar_t& genPartFlav;
-    Int_t& genPartIdxMother;
 
-    /* BEGIN CUSTOM GenPart.h.classdef */
+    /* BEGIN CUSTOM TrigObj.h.classdef */
     /* END CUSTOM */
 
     static utils::BranchList getListOfBranches();
@@ -74,18 +72,18 @@ namespace panda {
     void destructor(Bool_t recursive = kFALSE);
 
   protected:
-    GenPart(ArrayBase*);
+    TrigObj(ArrayBase*);
 
     void doBook_(TTree&, TString const&, utils::BranchList const& = {"*"}) override;
     void doInit_() override;
   };
 
-  typedef Array<GenPart> GenPartArray;
-  typedef Collection<GenPart> GenPartCollection;
-  typedef Ref<GenPart> GenPartRef;
-  typedef RefVector<GenPart> GenPartRefVector;
+  typedef Array<TrigObj> TrigObjArray;
+  typedef Collection<TrigObj> TrigObjCollection;
+  typedef Ref<TrigObj> TrigObjRef;
+  typedef RefVector<TrigObj> TrigObjRefVector;
 
-  /* BEGIN CUSTOM GenPart.h.global */
+  /* BEGIN CUSTOM TrigObj.h.global */
   /* END CUSTOM */
 
 }

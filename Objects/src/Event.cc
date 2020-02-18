@@ -3,9 +3,9 @@
 panda::Event::Event() :
   TreeEntry()
 {
-  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight}};
+  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &Pileup}};
   objects_.insert(objects_.end(), myObjects.begin(), myObjects.end());
-  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight}};
+  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj}};
   collections_.insert(collections_.end(), myCollections.begin(), myCollections.end());
   /* BEGIN CUSTOM Event.cc.ctor */
   /* END CUSTOM */
@@ -17,6 +17,7 @@ panda::Event::Event(Event const& _src) :
   GenPart(_src.GenPart),
   Electron(_src.Electron),
   Muon(_src.Muon),
+  Tau(_src.Tau),
   Jet(_src.Jet),
   Photon(_src.Photon),
   SV(_src.SV),
@@ -37,18 +38,25 @@ panda::Event::Event(Event const& _src) :
   TkMET(_src.TkMET),
   HLT(_src.HLT),
   btagWeight(_src.btagWeight),
+  CorrT1METJet(_src.CorrT1METJet),
+  TrigObj(_src.TrigObj),
+  LHE(_src.LHE),
+  Pileup(_src.Pileup),
   run(_src.run),
   luminosityBlock(_src.luminosityBlock),
   event(_src.event),
+  nLHEPdfWeight(_src.nLHEPdfWeight),
+  nLHEScaleWeight(_src.nLHEScaleWeight),
+  nLHEReweightingWeight(_src.nLHEReweightingWeight),
   fixedGridRhoFastjetAll(_src.fixedGridRhoFastjetAll),
   fixedGridRhoFastjetCentralCalo(_src.fixedGridRhoFastjetCentralCalo),
   fixedGridRhoFastjetCentralNeutral(_src.fixedGridRhoFastjetCentralNeutral),
   genWeight(_src.genWeight),
   LHEWeight_originalXWGTUP(_src.LHEWeight_originalXWGTUP)
 {
-  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight}};
+  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &Pileup}};
   objects_.insert(objects_.end(), myObjects.begin(), myObjects.end());
-  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight}};
+  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj}};
   collections_.insert(collections_.end(), myCollections.begin(), myCollections.end());
 
   /* BEGIN CUSTOM Event.cc.copy_ctor */
@@ -72,6 +80,9 @@ panda::Event::operator=(Event const& _src)
   run = _src.run;
   luminosityBlock = _src.luminosityBlock;
   event = _src.event;
+  nLHEPdfWeight = _src.nLHEPdfWeight;
+  nLHEScaleWeight = _src.nLHEScaleWeight;
+  nLHEReweightingWeight = _src.nLHEReweightingWeight;
   fixedGridRhoFastjetAll = _src.fixedGridRhoFastjetAll;
   fixedGridRhoFastjetCentralCalo = _src.fixedGridRhoFastjetCentralCalo;
   fixedGridRhoFastjetCentralNeutral = _src.fixedGridRhoFastjetCentralNeutral;
@@ -82,6 +93,7 @@ panda::Event::operator=(Event const& _src)
   GenPart = _src.GenPart;
   Electron = _src.Electron;
   Muon = _src.Muon;
+  Tau = _src.Tau;
   Jet = _src.Jet;
   Photon = _src.Photon;
   SV = _src.SV;
@@ -102,6 +114,10 @@ panda::Event::operator=(Event const& _src)
   TkMET = _src.TkMET;
   HLT = _src.HLT;
   btagWeight = _src.btagWeight;
+  CorrT1METJet = _src.CorrT1METJet;
+  TrigObj = _src.TrigObj;
+  LHE = _src.LHE;
+  Pileup = _src.Pileup;
 
   return *this;
 }
@@ -120,6 +136,9 @@ panda::Event::dump(std::ostream& _out/* = std::cout*/) const
   _out << "run = " << run << std::endl;
   _out << "luminosityBlock = " << luminosityBlock << std::endl;
   _out << "event = " << event << std::endl;
+  _out << "nLHEPdfWeight = " << nLHEPdfWeight << std::endl;
+  _out << "nLHEScaleWeight = " << nLHEScaleWeight << std::endl;
+  _out << "nLHEReweightingWeight = " << nLHEReweightingWeight << std::endl;
   _out << "fixedGridRhoFastjetAll = " << fixedGridRhoFastjetAll << std::endl;
   _out << "fixedGridRhoFastjetCentralCalo = " << fixedGridRhoFastjetCentralCalo << std::endl;
   _out << "fixedGridRhoFastjetCentralNeutral = " << fixedGridRhoFastjetCentralNeutral << std::endl;
@@ -130,6 +149,7 @@ panda::Event::dump(std::ostream& _out/* = std::cout*/) const
   GenPart.dump(_out);
   Electron.dump(_out);
   Muon.dump(_out);
+  Tau.dump(_out);
   Jet.dump(_out);
   Photon.dump(_out);
   SV.dump(_out);
@@ -150,6 +170,10 @@ panda::Event::dump(std::ostream& _out/* = std::cout*/) const
   TkMET.dump(_out);
   HLT.dump(_out);
   btagWeight.dump(_out);
+  CorrT1METJet.dump(_out);
+  TrigObj.dump(_out);
+  LHE.dump(_out);
+  Pileup.dump(_out);
 
 }
 /*static*/
@@ -157,12 +181,13 @@ panda::utils::BranchList
 panda::Event::getListOfBranches(Bool_t _direct/* = kFALSE*/)
 {
   utils::BranchList blist;
-  blist += {"run", "luminosityBlock", "event", "fixedGridRhoFastjetAll", "fixedGridRhoFastjetCentralCalo", "fixedGridRhoFastjetCentralNeutral", "genWeight", "LHEWeight_originalXWGTUP"};
+  blist += {"run", "luminosityBlock", "event", "nLHEPdfWeight", "nLHEScaleWeight", "nLHEReweightingWeight", "fixedGridRhoFastjetAll", "fixedGridRhoFastjetCentralCalo", "fixedGridRhoFastjetCentralNeutral", "genWeight", "LHEWeight_originalXWGTUP"};
   if (!_direct) {
     blist += Flags::getListOfBranches().fullNames("Flag");
     blist += GenPart::getListOfBranches().fullNames("GenPart");
     blist += Electron::getListOfBranches().fullNames("Electron");
     blist += Muon::getListOfBranches().fullNames("Muon");
+    blist += Tau::getListOfBranches().fullNames("Tau");
     blist += Jet::getListOfBranches().fullNames("Jet");
     blist += Photon::getListOfBranches().fullNames("Photon");
     blist += SecondaryVertex::getListOfBranches().fullNames("SV");
@@ -183,6 +208,10 @@ panda::Event::getListOfBranches(Bool_t _direct/* = kFALSE*/)
     blist += RecoMet::getListOfBranches().fullNames("TkMET");
     blist += Triggers::getListOfBranches().fullNames("HLT");
     blist += BReweight::getListOfBranches().fullNames("btagWeight");
+    blist += CorrT1METJet::getListOfBranches().fullNames("CorrT1METJet");
+    blist += TrigObj::getListOfBranches().fullNames("TrigObj");
+    blist += Lhe::getListOfBranches().fullNames("LHE");
+    blist += Piles::getListOfBranches().fullNames("Pileup");
   }
   /* BEGIN CUSTOM Event.cc.getListOfBranches_ */
   /* END CUSTOM */
@@ -196,6 +225,9 @@ panda::Event::doSetStatus_(TTree& _tree, utils::BranchList const& _branches)
   utils::setStatus(_tree, "", "run", _branches);
   utils::setStatus(_tree, "", "luminosityBlock", _branches);
   utils::setStatus(_tree, "", "event", _branches);
+  utils::setStatus(_tree, "", "nLHEPdfWeight", _branches);
+  utils::setStatus(_tree, "", "nLHEScaleWeight", _branches);
+  utils::setStatus(_tree, "", "nLHEReweightingWeight", _branches);
   utils::setStatus(_tree, "", "fixedGridRhoFastjetAll", _branches);
   utils::setStatus(_tree, "", "fixedGridRhoFastjetCentralCalo", _branches);
   utils::setStatus(_tree, "", "fixedGridRhoFastjetCentralNeutral", _branches);
@@ -212,6 +244,9 @@ panda::Event::doGetStatus_(TTree& _tree) const
   blist.push_back(utils::getStatus(_tree, "", "run"));
   blist.push_back(utils::getStatus(_tree, "", "luminosityBlock"));
   blist.push_back(utils::getStatus(_tree, "", "event"));
+  blist.push_back(utils::getStatus(_tree, "", "nLHEPdfWeight"));
+  blist.push_back(utils::getStatus(_tree, "", "nLHEScaleWeight"));
+  blist.push_back(utils::getStatus(_tree, "", "nLHEReweightingWeight"));
   blist.push_back(utils::getStatus(_tree, "", "fixedGridRhoFastjetAll"));
   blist.push_back(utils::getStatus(_tree, "", "fixedGridRhoFastjetCentralCalo"));
   blist.push_back(utils::getStatus(_tree, "", "fixedGridRhoFastjetCentralNeutral"));
@@ -234,6 +269,9 @@ panda::Event::doSetAddress_(TTree& _tree, utils::BranchList const& _branches, Bo
   utils::setAddress(_tree, "", "run", &run, _branches, _setStatus);
   utils::setAddress(_tree, "", "luminosityBlock", &luminosityBlock, _branches, _setStatus);
   utils::setAddress(_tree, "", "event", &event, _branches, _setStatus);
+  utils::setAddress(_tree, "", "nLHEPdfWeight", &nLHEPdfWeight, _branches, _setStatus);
+  utils::setAddress(_tree, "", "nLHEScaleWeight", &nLHEScaleWeight, _branches, _setStatus);
+  utils::setAddress(_tree, "", "nLHEReweightingWeight", &nLHEReweightingWeight, _branches, _setStatus);
   utils::setAddress(_tree, "", "fixedGridRhoFastjetAll", &fixedGridRhoFastjetAll, _branches, _setStatus);
   utils::setAddress(_tree, "", "fixedGridRhoFastjetCentralCalo", &fixedGridRhoFastjetCentralCalo, _branches, _setStatus);
   utils::setAddress(_tree, "", "fixedGridRhoFastjetCentralNeutral", &fixedGridRhoFastjetCentralNeutral, _branches, _setStatus);
@@ -248,6 +286,9 @@ panda::Event::doBook_(TTree& _tree, utils::BranchList const& _branches)
   utils::book(_tree, "", "run", "", 'i', &run, _branches);
   utils::book(_tree, "", "luminosityBlock", "", 'i', &luminosityBlock, _branches);
   utils::book(_tree, "", "event", "", 'l', &event, _branches);
+  utils::book(_tree, "", "nLHEPdfWeight", "", 'I', &nLHEPdfWeight, _branches);
+  utils::book(_tree, "", "nLHEScaleWeight", "", 'I', &nLHEScaleWeight, _branches);
+  utils::book(_tree, "", "nLHEReweightingWeight", "", 'I', &nLHEReweightingWeight, _branches);
   utils::book(_tree, "", "fixedGridRhoFastjetAll", "", 'F', &fixedGridRhoFastjetAll, _branches);
   utils::book(_tree, "", "fixedGridRhoFastjetCentralCalo", "", 'F', &fixedGridRhoFastjetCentralCalo, _branches);
   utils::book(_tree, "", "fixedGridRhoFastjetCentralNeutral", "", 'F', &fixedGridRhoFastjetCentralNeutral, _branches);
@@ -269,6 +310,9 @@ panda::Event::doInit_()
   run = 0;
   luminosityBlock = 0;
   event = 0;
+  nLHEPdfWeight = 0;
+  nLHEScaleWeight = 0;
+  nLHEReweightingWeight = 0;
   fixedGridRhoFastjetAll = 0.;
   fixedGridRhoFastjetCentralCalo = 0.;
   fixedGridRhoFastjetCentralNeutral = 0.;

@@ -7,7 +7,7 @@ panda::Electron::getListOfBranches()
   utils::BranchList blist;
   blist += Lepton::getListOfBranches();
   blist += EGamma::getListOfBranches();
-  blist += {"deltaEtaSC", "dr03EcalRecHitSumEt", "dr03HcalDepth1TowerSumEt", "dr03TkSumPt", "dr03TkSumPtHEEP", "mvaFall17V1Iso", "mvaFall17V1noIso", "mvaFall17V2Iso", "mvaFall17V2noIso", "mvaSpring16GP", "mvaSpring16HZZ", "mvaFall17V1Iso_WP80", "mvaFall17V1Iso_WP90", "mvaFall17V1Iso_WPL", "mvaFall17V1noIso_WP80", "mvaFall17V1noIso_WP90", "mvaFall17V1noIso_WPL", "mvaFall17V2Iso_WP80", "mvaFall17V2Iso_WP90", "mvaFall17V2Iso_WPL", "mvaFall17V2noIso_WP80", "mvaFall17V2noIso_WP90", "mvaFall17V2noIso_WPL", "mvaSpring16GP_WP80", "mvaSpring16GP_WP90", "mvaSpring16HZZ_WPL", "vidNestedWPBitmapSpring15", "vidNestedWPBitmapSum16", "cutBased_Fall17_V1", "cutBased_HLTPreSel", "cutBased_Spring15", "cutBased_Sum16", "cutBased_HEEP", "convVeto", "lostHits", "photonIdx"};
+  blist += {"deltaEtaSC", "dr03EcalRecHitSumEt", "dr03HcalDepth1TowerSumEt", "dr03TkSumPt", "dr03TkSumPtHEEP", "mvaFall17V1Iso", "mvaFall17V1noIso", "mvaFall17V2Iso", "mvaFall17V2noIso", "mvaSpring16GP", "mvaSpring16HZZ", "mvaFall17V1Iso_WP80", "mvaFall17V1Iso_WP90", "mvaFall17V1Iso_WPL", "mvaFall17V1noIso_WP80", "mvaFall17V1noIso_WP90", "mvaFall17V1noIso_WPL", "mvaFall17V2Iso_WP80", "mvaFall17V2Iso_WP90", "mvaFall17V2Iso_WPL", "mvaFall17V2noIso_WP80", "mvaFall17V2noIso_WP90", "mvaFall17V2noIso_WPL", "mvaSpring16GP_WP80", "mvaSpring16GP_WP90", "mvaSpring16HZZ_WPL", "vidNestedWPBitmapSpring15", "vidNestedWPBitmapSum16", "cutBased_Fall17_V1", "cutBased", "cutBased_HEEP", "convVeto", "lostHits", "photonIdx"};
   return blist;
 }
 
@@ -53,9 +53,7 @@ panda::Electron::datastore::allocate(UInt_t _nmax)
   vidNestedWPBitmapSpring15 = new Int_t[nmax_];
   vidNestedWPBitmapSum16 = new Int_t[nmax_];
   cutBased_Fall17_V1 = new Int_t[nmax_];
-  cutBased_HLTPreSel = new Int_t[nmax_];
-  cutBased_Spring15 = new Int_t[nmax_];
-  cutBased_Sum16 = new Int_t[nmax_];
+  cutBased = new Int_t[nmax_];
   cutBased_HEEP = new Bool_t[nmax_];
   convVeto = new Bool_t[nmax_];
   lostHits = new UChar_t[nmax_];
@@ -141,12 +139,8 @@ panda::Electron::datastore::deallocate()
   vidNestedWPBitmapSum16 = 0;
   delete [] cutBased_Fall17_V1;
   cutBased_Fall17_V1 = 0;
-  delete [] cutBased_HLTPreSel;
-  cutBased_HLTPreSel = 0;
-  delete [] cutBased_Spring15;
-  cutBased_Spring15 = 0;
-  delete [] cutBased_Sum16;
-  cutBased_Sum16 = 0;
+  delete [] cutBased;
+  cutBased = 0;
   delete [] cutBased_HEEP;
   cutBased_HEEP = 0;
   delete [] convVeto;
@@ -199,9 +193,7 @@ panda::Electron::datastore::setStatus(TTree& _tree, TString const& _name, utils:
   utils::setStatus(_tree, _name, "vidNestedWPBitmapSpring15", _branches);
   utils::setStatus(_tree, _name, "vidNestedWPBitmapSum16", _branches);
   utils::setStatus(_tree, _name, "cutBased_Fall17_V1", _branches);
-  utils::setStatus(_tree, _name, "cutBased_HLTPreSel", _branches);
-  utils::setStatus(_tree, _name, "cutBased_Spring15", _branches);
-  utils::setStatus(_tree, _name, "cutBased_Sum16", _branches);
+  utils::setStatus(_tree, _name, "cutBased", _branches);
   utils::setStatus(_tree, _name, "cutBased_HEEP", _branches);
   utils::setStatus(_tree, _name, "convVeto", _branches);
   utils::setStatus(_tree, _name, "lostHits", _branches);
@@ -250,9 +242,7 @@ panda::Electron::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "vidNestedWPBitmapSpring15"));
   blist.push_back(utils::getStatus(_tree, _name, "vidNestedWPBitmapSum16"));
   blist.push_back(utils::getStatus(_tree, _name, "cutBased_Fall17_V1"));
-  blist.push_back(utils::getStatus(_tree, _name, "cutBased_HLTPreSel"));
-  blist.push_back(utils::getStatus(_tree, _name, "cutBased_Spring15"));
-  blist.push_back(utils::getStatus(_tree, _name, "cutBased_Sum16"));
+  blist.push_back(utils::getStatus(_tree, _name, "cutBased"));
   blist.push_back(utils::getStatus(_tree, _name, "cutBased_HEEP"));
   blist.push_back(utils::getStatus(_tree, _name, "convVeto"));
   blist.push_back(utils::getStatus(_tree, _name, "lostHits"));
@@ -303,9 +293,7 @@ panda::Electron::datastore::setAddress(TTree& _tree, TString const& _name, utils
   utils::setAddress(_tree, _name, "vidNestedWPBitmapSpring15", vidNestedWPBitmapSpring15, _branches, _setStatus);
   utils::setAddress(_tree, _name, "vidNestedWPBitmapSum16", vidNestedWPBitmapSum16, _branches, _setStatus);
   utils::setAddress(_tree, _name, "cutBased_Fall17_V1", cutBased_Fall17_V1, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "cutBased_HLTPreSel", cutBased_HLTPreSel, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "cutBased_Spring15", cutBased_Spring15, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "cutBased_Sum16", cutBased_Sum16, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "cutBased", cutBased, _branches, _setStatus);
   utils::setAddress(_tree, _name, "cutBased_HEEP", cutBased_HEEP, _branches, _setStatus);
   utils::setAddress(_tree, _name, "convVeto", convVeto, _branches, _setStatus);
   utils::setAddress(_tree, _name, "lostHits", lostHits, _branches, _setStatus);
@@ -356,9 +344,7 @@ panda::Electron::datastore::book(TTree& _tree, TString const& _name, utils::Bran
   utils::book(_tree, _name, "vidNestedWPBitmapSpring15", size, 'I', vidNestedWPBitmapSpring15, _branches);
   utils::book(_tree, _name, "vidNestedWPBitmapSum16", size, 'I', vidNestedWPBitmapSum16, _branches);
   utils::book(_tree, _name, "cutBased_Fall17_V1", size, 'I', cutBased_Fall17_V1, _branches);
-  utils::book(_tree, _name, "cutBased_HLTPreSel", size, 'I', cutBased_HLTPreSel, _branches);
-  utils::book(_tree, _name, "cutBased_Spring15", size, 'I', cutBased_Spring15, _branches);
-  utils::book(_tree, _name, "cutBased_Sum16", size, 'I', cutBased_Sum16, _branches);
+  utils::book(_tree, _name, "cutBased", size, 'I', cutBased, _branches);
   utils::book(_tree, _name, "cutBased_HEEP", size, 'O', cutBased_HEEP, _branches);
   utils::book(_tree, _name, "convVeto", size, 'O', convVeto, _branches);
   utils::book(_tree, _name, "lostHits", size, 'b', lostHits, _branches);
@@ -407,9 +393,7 @@ panda::Electron::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "vidNestedWPBitmapSpring15");
   utils::resetAddress(_tree, _name, "vidNestedWPBitmapSum16");
   utils::resetAddress(_tree, _name, "cutBased_Fall17_V1");
-  utils::resetAddress(_tree, _name, "cutBased_HLTPreSel");
-  utils::resetAddress(_tree, _name, "cutBased_Spring15");
-  utils::resetAddress(_tree, _name, "cutBased_Sum16");
+  utils::resetAddress(_tree, _name, "cutBased");
   utils::resetAddress(_tree, _name, "cutBased_HEEP");
   utils::resetAddress(_tree, _name, "convVeto");
   utils::resetAddress(_tree, _name, "lostHits");
@@ -462,9 +446,7 @@ panda::Electron::Electron(char const* _name/* = ""*/) :
   vidNestedWPBitmapSpring15(gStore.getData(this).vidNestedWPBitmapSpring15[0]),
   vidNestedWPBitmapSum16(gStore.getData(this).vidNestedWPBitmapSum16[0]),
   cutBased_Fall17_V1(gStore.getData(this).cutBased_Fall17_V1[0]),
-  cutBased_HLTPreSel(gStore.getData(this).cutBased_HLTPreSel[0]),
-  cutBased_Spring15(gStore.getData(this).cutBased_Spring15[0]),
-  cutBased_Sum16(gStore.getData(this).cutBased_Sum16[0]),
+  cutBased(gStore.getData(this).cutBased[0]),
   cutBased_HEEP(gStore.getData(this).cutBased_HEEP[0]),
   convVeto(gStore.getData(this).convVeto[0]),
   lostHits(gStore.getData(this).lostHits[0]),
@@ -504,9 +486,7 @@ panda::Electron::Electron(Electron const& _src) :
   vidNestedWPBitmapSpring15(gStore.getData(this).vidNestedWPBitmapSpring15[0]),
   vidNestedWPBitmapSum16(gStore.getData(this).vidNestedWPBitmapSum16[0]),
   cutBased_Fall17_V1(gStore.getData(this).cutBased_Fall17_V1[0]),
-  cutBased_HLTPreSel(gStore.getData(this).cutBased_HLTPreSel[0]),
-  cutBased_Spring15(gStore.getData(this).cutBased_Spring15[0]),
-  cutBased_Sum16(gStore.getData(this).cutBased_Sum16[0]),
+  cutBased(gStore.getData(this).cutBased[0]),
   cutBased_HEEP(gStore.getData(this).cutBased_HEEP[0]),
   convVeto(gStore.getData(this).convVeto[0]),
   lostHits(gStore.getData(this).lostHits[0]),
@@ -547,9 +527,7 @@ panda::Electron::Electron(datastore& _data, UInt_t _idx) :
   vidNestedWPBitmapSpring15(_data.vidNestedWPBitmapSpring15[_idx]),
   vidNestedWPBitmapSum16(_data.vidNestedWPBitmapSum16[_idx]),
   cutBased_Fall17_V1(_data.cutBased_Fall17_V1[_idx]),
-  cutBased_HLTPreSel(_data.cutBased_HLTPreSel[_idx]),
-  cutBased_Spring15(_data.cutBased_Spring15[_idx]),
-  cutBased_Sum16(_data.cutBased_Sum16[_idx]),
+  cutBased(_data.cutBased[_idx]),
   cutBased_HEEP(_data.cutBased_HEEP[_idx]),
   convVeto(_data.convVeto[_idx]),
   lostHits(_data.lostHits[_idx]),
@@ -589,9 +567,7 @@ panda::Electron::Electron(ArrayBase* _array) :
   vidNestedWPBitmapSpring15(gStore.getData(this).vidNestedWPBitmapSpring15[0]),
   vidNestedWPBitmapSum16(gStore.getData(this).vidNestedWPBitmapSum16[0]),
   cutBased_Fall17_V1(gStore.getData(this).cutBased_Fall17_V1[0]),
-  cutBased_HLTPreSel(gStore.getData(this).cutBased_HLTPreSel[0]),
-  cutBased_Spring15(gStore.getData(this).cutBased_Spring15[0]),
-  cutBased_Sum16(gStore.getData(this).cutBased_Sum16[0]),
+  cutBased(gStore.getData(this).cutBased[0]),
   cutBased_HEEP(gStore.getData(this).cutBased_HEEP[0]),
   convVeto(gStore.getData(this).convVeto[0]),
   lostHits(gStore.getData(this).lostHits[0]),
@@ -656,9 +632,7 @@ panda::Electron::operator=(Electron const& _src)
   vidNestedWPBitmapSpring15 = _src.vidNestedWPBitmapSpring15;
   vidNestedWPBitmapSum16 = _src.vidNestedWPBitmapSum16;
   cutBased_Fall17_V1 = _src.cutBased_Fall17_V1;
-  cutBased_HLTPreSel = _src.cutBased_HLTPreSel;
-  cutBased_Spring15 = _src.cutBased_Spring15;
-  cutBased_Sum16 = _src.cutBased_Sum16;
+  cutBased = _src.cutBased;
   cutBased_HEEP = _src.cutBased_HEEP;
   convVeto = _src.convVeto;
   lostHits = _src.lostHits;
@@ -712,9 +686,7 @@ panda::Electron::doBook_(TTree& _tree, TString const& _name, utils::BranchList c
   utils::book(_tree, _name, "vidNestedWPBitmapSpring15", "", 'I', &vidNestedWPBitmapSpring15, _branches);
   utils::book(_tree, _name, "vidNestedWPBitmapSum16", "", 'I', &vidNestedWPBitmapSum16, _branches);
   utils::book(_tree, _name, "cutBased_Fall17_V1", "", 'I', &cutBased_Fall17_V1, _branches);
-  utils::book(_tree, _name, "cutBased_HLTPreSel", "", 'I', &cutBased_HLTPreSel, _branches);
-  utils::book(_tree, _name, "cutBased_Spring15", "", 'I', &cutBased_Spring15, _branches);
-  utils::book(_tree, _name, "cutBased_Sum16", "", 'I', &cutBased_Sum16, _branches);
+  utils::book(_tree, _name, "cutBased", "", 'I', &cutBased, _branches);
   utils::book(_tree, _name, "cutBased_HEEP", "", 'O', &cutBased_HEEP, _branches);
   utils::book(_tree, _name, "convVeto", "", 'O', &convVeto, _branches);
   utils::book(_tree, _name, "lostHits", "", 'b', &lostHits, _branches);
@@ -763,9 +735,7 @@ panda::Electron::doInit_()
   vidNestedWPBitmapSpring15 = 0;
   vidNestedWPBitmapSum16 = 0;
   cutBased_Fall17_V1 = 0;
-  cutBased_HLTPreSel = 0;
-  cutBased_Spring15 = 0;
-  cutBased_Sum16 = 0;
+  cutBased = 0;
   cutBased_HEEP = false;
   convVeto = false;
   lostHits = 0;
@@ -825,9 +795,7 @@ panda::Electron::dump(std::ostream& _out/* = std::cout*/) const
   _out << "vidNestedWPBitmapSpring15 = " << vidNestedWPBitmapSpring15 << std::endl;
   _out << "vidNestedWPBitmapSum16 = " << vidNestedWPBitmapSum16 << std::endl;
   _out << "cutBased_Fall17_V1 = " << cutBased_Fall17_V1 << std::endl;
-  _out << "cutBased_HLTPreSel = " << cutBased_HLTPreSel << std::endl;
-  _out << "cutBased_Spring15 = " << cutBased_Spring15 << std::endl;
-  _out << "cutBased_Sum16 = " << cutBased_Sum16 << std::endl;
+  _out << "cutBased = " << cutBased << std::endl;
   _out << "cutBased_HEEP = " << cutBased_HEEP << std::endl;
   _out << "convVeto = " << convVeto << std::endl;
   _out << "lostHits = " << static_cast<const UInt_t>(lostHits) << std::endl;

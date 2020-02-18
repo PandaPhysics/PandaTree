@@ -12,11 +12,16 @@
 #include "PandaTree/Objects/interface/Photon.h"
 #include "PandaTree/Objects/interface/Electron.h"
 #include "PandaTree/Objects/interface/Muon.h"
+#include "PandaTree/Objects/interface/Tau.h"
 #include "PandaTree/Objects/interface/Jet.h"
 #include "PandaTree/Objects/interface/SubJet.h"
 #include "PandaTree/Objects/interface/FatJet.h"
+#include "PandaTree/Objects/interface/TrigObj.h"
+#include "PandaTree/Objects/interface/Lhe.h"
+#include "PandaTree/Objects/interface/Piles.h"
 #include "PandaTree/Objects/interface/Triggers.h"
 #include "PandaTree/Objects/interface/BReweight.h"
+#include "PandaTree/Objects/interface/CorrT1METJet.h"
 #include "PandaTree/Objects/interface/Weight.h"
 #include "PandaTree/Objects/interface/Event.h"
 
@@ -42,11 +47,16 @@
 #pragma link C++ class panda::Photon;
 #pragma link C++ class panda::Electron;
 #pragma link C++ class panda::Muon;
+#pragma link C++ class panda::Tau;
 #pragma link C++ class panda::Jet;
 #pragma link C++ class panda::SubJet;
 #pragma link C++ class panda::FatJet;
+#pragma link C++ class panda::TrigObj;
+#pragma link C++ class panda::Lhe;
+#pragma link C++ class panda::Piles;
 #pragma link C++ class panda::Triggers;
 #pragma link C++ class panda::BReweight;
+#pragma link C++ class panda::CorrT1METJet;
 #pragma link C++ class panda::Weight;
 #pragma link C++ class panda::Array<panda::Particle>;
 #pragma link C++ class panda::Collection<panda::Particle>;
@@ -88,6 +98,10 @@
 #pragma link C++ class panda::Collection<panda::Muon>;
 #pragma link C++ class panda::Ref<panda::Muon>;
 #pragma link C++ class panda::RefVector<panda::Muon>;
+#pragma link C++ class panda::Array<panda::Tau>;
+#pragma link C++ class panda::Collection<panda::Tau>;
+#pragma link C++ class panda::Ref<panda::Tau>;
+#pragma link C++ class panda::RefVector<panda::Tau>;
 #pragma link C++ class panda::Array<panda::Jet>;
 #pragma link C++ class panda::Collection<panda::Jet>;
 #pragma link C++ class panda::Ref<panda::Jet>;
@@ -100,6 +114,14 @@
 #pragma link C++ class panda::Collection<panda::FatJet>;
 #pragma link C++ class panda::Ref<panda::FatJet>;
 #pragma link C++ class panda::RefVector<panda::FatJet>;
+#pragma link C++ class panda::Array<panda::TrigObj>;
+#pragma link C++ class panda::Collection<panda::TrigObj>;
+#pragma link C++ class panda::Ref<panda::TrigObj>;
+#pragma link C++ class panda::RefVector<panda::TrigObj>;
+#pragma link C++ class panda::Array<panda::CorrT1METJet>;
+#pragma link C++ class panda::Collection<panda::CorrT1METJet>;
+#pragma link C++ class panda::Ref<panda::CorrT1METJet>;
+#pragma link C++ class panda::RefVector<panda::CorrT1METJet>;
 #pragma link C++ class panda::Array<panda::Weight>;
 #pragma link C++ class panda::Collection<panda::Weight>;
 #pragma link C++ class panda::Ref<panda::Weight>;
@@ -144,6 +166,10 @@
 #pragma link C++ typedef panda::MuonCollection;
 #pragma link C++ typedef panda::MuonRef;
 #pragma link C++ typedef panda::MuonRefVector;
+#pragma link C++ typedef panda::TauArray;
+#pragma link C++ typedef panda::TauCollection;
+#pragma link C++ typedef panda::TauRef;
+#pragma link C++ typedef panda::TauRefVector;
 #pragma link C++ typedef panda::JetArray;
 #pragma link C++ typedef panda::JetCollection;
 #pragma link C++ typedef panda::JetRef;
@@ -156,6 +182,14 @@
 #pragma link C++ typedef panda::FatJetCollection;
 #pragma link C++ typedef panda::FatJetRef;
 #pragma link C++ typedef panda::FatJetRefVector;
+#pragma link C++ typedef panda::TrigObjArray;
+#pragma link C++ typedef panda::TrigObjCollection;
+#pragma link C++ typedef panda::TrigObjRef;
+#pragma link C++ typedef panda::TrigObjRefVector;
+#pragma link C++ typedef panda::CorrT1METJetArray;
+#pragma link C++ typedef panda::CorrT1METJetCollection;
+#pragma link C++ typedef panda::CorrT1METJetRef;
+#pragma link C++ typedef panda::CorrT1METJetRefVector;
 #pragma link C++ typedef panda::WeightArray;
 #pragma link C++ typedef panda::WeightCollection;
 #pragma link C++ typedef panda::WeightRef;

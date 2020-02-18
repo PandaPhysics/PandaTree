@@ -170,7 +170,7 @@ nTrackerLayers/I
 highPtId/b
 miniIsoId/I
 multiIsoId/b
-mvaId/i
+mvaId/I
 pfIsoId/I
 tkIsoId/I
 inTimeMuon/O
@@ -188,7 +188,7 @@ triggerIdLoose/O
 decayMode/I
 idDecayMode/O
 idDecayModeNewDMs/O
-idMVAoldDM2017v2/i
+idMVAoldDM2017v2/I
 leadTkPtOverTauPt/F
 leadTkDeltaEta/F
 leadTkDeltaPhi/F
@@ -278,14 +278,6 @@ l2pt/F
 pt/F
 eta/F
 phi/F
-
-[Lhe:SINGLE]
-HT/F
-Vpt/F
-Njets/I
-
-[Piles:SINGLE]
-nTrueInt/F
 
 [Triggers:SINGLE]
 AK8PFJet360_TrimMass30/O
@@ -944,9 +936,7 @@ DoubleTrkMu_16_6_NoFiltersNoVtx/O
 CSVV2/F
 DeepCSVB/F
 
-[CorrT1METJet>Particle]
-area/F
-muonSubtrFactor/F
+[CorrT1METJet>Jet]
 rawPt/F
 
 [Weight]
@@ -956,9 +946,7 @@ VAL/F
 run/i
 luminosityBlock/i
 event/l
-nLHEPdfWeight/I
-nLHEScaleWeight/I
-nLHEReweightingWeight/I
+nTrigObj/I
 fixedGridRhoFastjetAll/F
 fixedGridRhoFastjetCentralCalo/F
 fixedGridRhoFastjetCentralNeutral/F
@@ -971,14 +959,15 @@ Muon/MuonCollection(16)
 Tau/TauCollection(16)
 Jet/JetCollection(32)
 Photon/PhotonCollection(16)
+TrigObj/TrigObjCollection(64)
 SV/SecondaryVertexCollection(32)
 FatJet/FatJetCollection(8)
 SubJet/SubJetCollection(64)
 GenJet/GenJetCollection(64)
-LHEPdfWeight/WeightCollection(128)
-LHEReweightingWeight/WeightCollection(128)
-LHEScaleWeight/WeightCollection(64)
-PSWeight/WeightCollection(64)
+LHEPdfWeight/WeightCollection(16)
+LHEReweightingWeight/WeightCollection(16)
+LHEScaleWeight/WeightCollection(16)
+PSWeight/WeightCollection(16)
 PV/PrimaryVertex
 GenMET/Met
 CaloMET/RecoMet
@@ -989,7 +978,3 @@ RawMET/RecoMet
 TkMET/RecoMet
 HLT/Triggers
 btagWeight/BReweight
-CorrT1METJet/CorrT1METJetCollection(32)
-TrigObj/TrigObjCollection(512)
-LHE/Lhe
-Pileup/Piles

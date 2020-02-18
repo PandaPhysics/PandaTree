@@ -7,7 +7,7 @@ panda::Photon::getListOfBranches()
   utils::BranchList blist;
   blist += PFParticle::getListOfBranches();
   blist += EGamma::getListOfBranches();
-  blist += {"mvaID", "mvaID17", "pfRelIso03_all", "pfRelIso03_chg", "cutBased17Bitmap", "mvaID17_WP80", "mvaID17_WP90", "mvaID_WP80", "mvaID_WP90", "isScEtaEB", "isScEtaEE", "pixelSeed", "electronVeto", "electronIdx"};
+  blist += {"mvaID", "mvaIDV1", "pfRelIso03_all", "pfRelIso03_chg", "mvaID_WP80", "mvaID_WP90", "isScEtaEB", "isScEtaEE", "pixelSeed", "electronVeto", "electronIdx", "cutBasedBitmap"};
   return blist;
 }
 
@@ -25,12 +25,9 @@ panda::Photon::datastore::allocate(UInt_t _nmax)
   cutBased = new Int_t[nmax_];
   vidNestedWPBitmap = new Int_t[nmax_];
   mvaID = new Float_t[nmax_];
-  mvaID17 = new Float_t[nmax_];
+  mvaIDV1 = new Float_t[nmax_];
   pfRelIso03_all = new Float_t[nmax_];
   pfRelIso03_chg = new Float_t[nmax_];
-  cutBased17Bitmap = new Int_t[nmax_];
-  mvaID17_WP80 = new Bool_t[nmax_];
-  mvaID17_WP90 = new Bool_t[nmax_];
   mvaID_WP80 = new Bool_t[nmax_];
   mvaID_WP90 = new Bool_t[nmax_];
   isScEtaEB = new Bool_t[nmax_];
@@ -38,6 +35,7 @@ panda::Photon::datastore::allocate(UInt_t _nmax)
   pixelSeed = new Bool_t[nmax_];
   electronVeto = new Bool_t[nmax_];
   electronIdx = new Int_t[nmax_];
+  cutBasedBitmap = new Int_t[nmax_];
 }
 
 void
@@ -63,18 +61,12 @@ panda::Photon::datastore::deallocate()
   vidNestedWPBitmap = 0;
   delete [] mvaID;
   mvaID = 0;
-  delete [] mvaID17;
-  mvaID17 = 0;
+  delete [] mvaIDV1;
+  mvaIDV1 = 0;
   delete [] pfRelIso03_all;
   pfRelIso03_all = 0;
   delete [] pfRelIso03_chg;
   pfRelIso03_chg = 0;
-  delete [] cutBased17Bitmap;
-  cutBased17Bitmap = 0;
-  delete [] mvaID17_WP80;
-  mvaID17_WP80 = 0;
-  delete [] mvaID17_WP90;
-  mvaID17_WP90 = 0;
   delete [] mvaID_WP80;
   mvaID_WP80 = 0;
   delete [] mvaID_WP90;
@@ -89,6 +81,8 @@ panda::Photon::datastore::deallocate()
   electronVeto = 0;
   delete [] electronIdx;
   electronIdx = 0;
+  delete [] cutBasedBitmap;
+  cutBasedBitmap = 0;
 }
 
 void
@@ -105,12 +99,9 @@ panda::Photon::datastore::setStatus(TTree& _tree, TString const& _name, utils::B
   utils::setStatus(_tree, _name, "cutBased", _branches);
   utils::setStatus(_tree, _name, "vidNestedWPBitmap", _branches);
   utils::setStatus(_tree, _name, "mvaID", _branches);
-  utils::setStatus(_tree, _name, "mvaID17", _branches);
+  utils::setStatus(_tree, _name, "mvaIDV1", _branches);
   utils::setStatus(_tree, _name, "pfRelIso03_all", _branches);
   utils::setStatus(_tree, _name, "pfRelIso03_chg", _branches);
-  utils::setStatus(_tree, _name, "cutBased17Bitmap", _branches);
-  utils::setStatus(_tree, _name, "mvaID17_WP80", _branches);
-  utils::setStatus(_tree, _name, "mvaID17_WP90", _branches);
   utils::setStatus(_tree, _name, "mvaID_WP80", _branches);
   utils::setStatus(_tree, _name, "mvaID_WP90", _branches);
   utils::setStatus(_tree, _name, "isScEtaEB", _branches);
@@ -118,6 +109,7 @@ panda::Photon::datastore::setStatus(TTree& _tree, TString const& _name, utils::B
   utils::setStatus(_tree, _name, "pixelSeed", _branches);
   utils::setStatus(_tree, _name, "electronVeto", _branches);
   utils::setStatus(_tree, _name, "electronIdx", _branches);
+  utils::setStatus(_tree, _name, "cutBasedBitmap", _branches);
 }
 
 panda::utils::BranchList
@@ -134,12 +126,9 @@ panda::Photon::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "cutBased"));
   blist.push_back(utils::getStatus(_tree, _name, "vidNestedWPBitmap"));
   blist.push_back(utils::getStatus(_tree, _name, "mvaID"));
-  blist.push_back(utils::getStatus(_tree, _name, "mvaID17"));
+  blist.push_back(utils::getStatus(_tree, _name, "mvaIDV1"));
   blist.push_back(utils::getStatus(_tree, _name, "pfRelIso03_all"));
   blist.push_back(utils::getStatus(_tree, _name, "pfRelIso03_chg"));
-  blist.push_back(utils::getStatus(_tree, _name, "cutBased17Bitmap"));
-  blist.push_back(utils::getStatus(_tree, _name, "mvaID17_WP80"));
-  blist.push_back(utils::getStatus(_tree, _name, "mvaID17_WP90"));
   blist.push_back(utils::getStatus(_tree, _name, "mvaID_WP80"));
   blist.push_back(utils::getStatus(_tree, _name, "mvaID_WP90"));
   blist.push_back(utils::getStatus(_tree, _name, "isScEtaEB"));
@@ -147,6 +136,7 @@ panda::Photon::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "pixelSeed"));
   blist.push_back(utils::getStatus(_tree, _name, "electronVeto"));
   blist.push_back(utils::getStatus(_tree, _name, "electronIdx"));
+  blist.push_back(utils::getStatus(_tree, _name, "cutBasedBitmap"));
 
   return blist;
 }
@@ -165,12 +155,9 @@ panda::Photon::datastore::setAddress(TTree& _tree, TString const& _name, utils::
   utils::setAddress(_tree, _name, "cutBased", cutBased, _branches, _setStatus);
   utils::setAddress(_tree, _name, "vidNestedWPBitmap", vidNestedWPBitmap, _branches, _setStatus);
   utils::setAddress(_tree, _name, "mvaID", mvaID, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "mvaID17", mvaID17, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "mvaIDV1", mvaIDV1, _branches, _setStatus);
   utils::setAddress(_tree, _name, "pfRelIso03_all", pfRelIso03_all, _branches, _setStatus);
   utils::setAddress(_tree, _name, "pfRelIso03_chg", pfRelIso03_chg, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "cutBased17Bitmap", cutBased17Bitmap, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "mvaID17_WP80", mvaID17_WP80, _branches, _setStatus);
-  utils::setAddress(_tree, _name, "mvaID17_WP90", mvaID17_WP90, _branches, _setStatus);
   utils::setAddress(_tree, _name, "mvaID_WP80", mvaID_WP80, _branches, _setStatus);
   utils::setAddress(_tree, _name, "mvaID_WP90", mvaID_WP90, _branches, _setStatus);
   utils::setAddress(_tree, _name, "isScEtaEB", isScEtaEB, _branches, _setStatus);
@@ -178,6 +165,7 @@ panda::Photon::datastore::setAddress(TTree& _tree, TString const& _name, utils::
   utils::setAddress(_tree, _name, "pixelSeed", pixelSeed, _branches, _setStatus);
   utils::setAddress(_tree, _name, "electronVeto", electronVeto, _branches, _setStatus);
   utils::setAddress(_tree, _name, "electronIdx", electronIdx, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "cutBasedBitmap", cutBasedBitmap, _branches, _setStatus);
 }
 
 void
@@ -196,12 +184,9 @@ panda::Photon::datastore::book(TTree& _tree, TString const& _name, utils::Branch
   utils::book(_tree, _name, "cutBased", size, 'I', cutBased, _branches);
   utils::book(_tree, _name, "vidNestedWPBitmap", size, 'I', vidNestedWPBitmap, _branches);
   utils::book(_tree, _name, "mvaID", size, 'F', mvaID, _branches);
-  utils::book(_tree, _name, "mvaID17", size, 'F', mvaID17, _branches);
+  utils::book(_tree, _name, "mvaIDV1", size, 'F', mvaIDV1, _branches);
   utils::book(_tree, _name, "pfRelIso03_all", size, 'F', pfRelIso03_all, _branches);
   utils::book(_tree, _name, "pfRelIso03_chg", size, 'F', pfRelIso03_chg, _branches);
-  utils::book(_tree, _name, "cutBased17Bitmap", size, 'I', cutBased17Bitmap, _branches);
-  utils::book(_tree, _name, "mvaID17_WP80", size, 'O', mvaID17_WP80, _branches);
-  utils::book(_tree, _name, "mvaID17_WP90", size, 'O', mvaID17_WP90, _branches);
   utils::book(_tree, _name, "mvaID_WP80", size, 'O', mvaID_WP80, _branches);
   utils::book(_tree, _name, "mvaID_WP90", size, 'O', mvaID_WP90, _branches);
   utils::book(_tree, _name, "isScEtaEB", size, 'O', isScEtaEB, _branches);
@@ -209,6 +194,7 @@ panda::Photon::datastore::book(TTree& _tree, TString const& _name, utils::Branch
   utils::book(_tree, _name, "pixelSeed", size, 'O', pixelSeed, _branches);
   utils::book(_tree, _name, "electronVeto", size, 'O', electronVeto, _branches);
   utils::book(_tree, _name, "electronIdx", size, 'I', electronIdx, _branches);
+  utils::book(_tree, _name, "cutBasedBitmap", size, 'I', cutBasedBitmap, _branches);
 }
 
 void
@@ -225,12 +211,9 @@ panda::Photon::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "cutBased");
   utils::resetAddress(_tree, _name, "vidNestedWPBitmap");
   utils::resetAddress(_tree, _name, "mvaID");
-  utils::resetAddress(_tree, _name, "mvaID17");
+  utils::resetAddress(_tree, _name, "mvaIDV1");
   utils::resetAddress(_tree, _name, "pfRelIso03_all");
   utils::resetAddress(_tree, _name, "pfRelIso03_chg");
-  utils::resetAddress(_tree, _name, "cutBased17Bitmap");
-  utils::resetAddress(_tree, _name, "mvaID17_WP80");
-  utils::resetAddress(_tree, _name, "mvaID17_WP90");
   utils::resetAddress(_tree, _name, "mvaID_WP80");
   utils::resetAddress(_tree, _name, "mvaID_WP90");
   utils::resetAddress(_tree, _name, "isScEtaEB");
@@ -238,6 +221,7 @@ panda::Photon::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "pixelSeed");
   utils::resetAddress(_tree, _name, "electronVeto");
   utils::resetAddress(_tree, _name, "electronIdx");
+  utils::resetAddress(_tree, _name, "cutBasedBitmap");
 }
 
 void
@@ -258,19 +242,17 @@ panda::Photon::Photon(char const* _name/* = ""*/) :
   PFParticle(new PhotonArray(1, _name)),
   EGamma(gStore.getData(this), 0),
   mvaID(gStore.getData(this).mvaID[0]),
-  mvaID17(gStore.getData(this).mvaID17[0]),
+  mvaIDV1(gStore.getData(this).mvaIDV1[0]),
   pfRelIso03_all(gStore.getData(this).pfRelIso03_all[0]),
   pfRelIso03_chg(gStore.getData(this).pfRelIso03_chg[0]),
-  cutBased17Bitmap(gStore.getData(this).cutBased17Bitmap[0]),
-  mvaID17_WP80(gStore.getData(this).mvaID17_WP80[0]),
-  mvaID17_WP90(gStore.getData(this).mvaID17_WP90[0]),
   mvaID_WP80(gStore.getData(this).mvaID_WP80[0]),
   mvaID_WP90(gStore.getData(this).mvaID_WP90[0]),
   isScEtaEB(gStore.getData(this).isScEtaEB[0]),
   isScEtaEE(gStore.getData(this).isScEtaEE[0]),
   pixelSeed(gStore.getData(this).pixelSeed[0]),
   electronVeto(gStore.getData(this).electronVeto[0]),
-  electronIdx(gStore.getData(this).electronIdx[0])
+  electronIdx(gStore.getData(this).electronIdx[0]),
+  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0])
 {
 }
 
@@ -278,19 +260,17 @@ panda::Photon::Photon(Photon const& _src) :
   PFParticle(new PhotonArray(1, _src.getName())),
   EGamma(gStore.getData(this), 0),
   mvaID(gStore.getData(this).mvaID[0]),
-  mvaID17(gStore.getData(this).mvaID17[0]),
+  mvaIDV1(gStore.getData(this).mvaIDV1[0]),
   pfRelIso03_all(gStore.getData(this).pfRelIso03_all[0]),
   pfRelIso03_chg(gStore.getData(this).pfRelIso03_chg[0]),
-  cutBased17Bitmap(gStore.getData(this).cutBased17Bitmap[0]),
-  mvaID17_WP80(gStore.getData(this).mvaID17_WP80[0]),
-  mvaID17_WP90(gStore.getData(this).mvaID17_WP90[0]),
   mvaID_WP80(gStore.getData(this).mvaID_WP80[0]),
   mvaID_WP90(gStore.getData(this).mvaID_WP90[0]),
   isScEtaEB(gStore.getData(this).isScEtaEB[0]),
   isScEtaEE(gStore.getData(this).isScEtaEE[0]),
   pixelSeed(gStore.getData(this).pixelSeed[0]),
   electronVeto(gStore.getData(this).electronVeto[0]),
-  electronIdx(gStore.getData(this).electronIdx[0])
+  electronIdx(gStore.getData(this).electronIdx[0]),
+  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0])
 {
   operator=(_src);
 }
@@ -299,19 +279,17 @@ panda::Photon::Photon(datastore& _data, UInt_t _idx) :
   PFParticle(_data, _idx),
   EGamma(_data, _idx),
   mvaID(_data.mvaID[_idx]),
-  mvaID17(_data.mvaID17[_idx]),
+  mvaIDV1(_data.mvaIDV1[_idx]),
   pfRelIso03_all(_data.pfRelIso03_all[_idx]),
   pfRelIso03_chg(_data.pfRelIso03_chg[_idx]),
-  cutBased17Bitmap(_data.cutBased17Bitmap[_idx]),
-  mvaID17_WP80(_data.mvaID17_WP80[_idx]),
-  mvaID17_WP90(_data.mvaID17_WP90[_idx]),
   mvaID_WP80(_data.mvaID_WP80[_idx]),
   mvaID_WP90(_data.mvaID_WP90[_idx]),
   isScEtaEB(_data.isScEtaEB[_idx]),
   isScEtaEE(_data.isScEtaEE[_idx]),
   pixelSeed(_data.pixelSeed[_idx]),
   electronVeto(_data.electronVeto[_idx]),
-  electronIdx(_data.electronIdx[_idx])
+  electronIdx(_data.electronIdx[_idx]),
+  cutBasedBitmap(_data.cutBasedBitmap[_idx])
 {
 }
 
@@ -319,19 +297,17 @@ panda::Photon::Photon(ArrayBase* _array) :
   PFParticle(_array),
   EGamma(gStore.getData(this), 0),
   mvaID(gStore.getData(this).mvaID[0]),
-  mvaID17(gStore.getData(this).mvaID17[0]),
+  mvaIDV1(gStore.getData(this).mvaIDV1[0]),
   pfRelIso03_all(gStore.getData(this).pfRelIso03_all[0]),
   pfRelIso03_chg(gStore.getData(this).pfRelIso03_chg[0]),
-  cutBased17Bitmap(gStore.getData(this).cutBased17Bitmap[0]),
-  mvaID17_WP80(gStore.getData(this).mvaID17_WP80[0]),
-  mvaID17_WP90(gStore.getData(this).mvaID17_WP90[0]),
   mvaID_WP80(gStore.getData(this).mvaID_WP80[0]),
   mvaID_WP90(gStore.getData(this).mvaID_WP90[0]),
   isScEtaEB(gStore.getData(this).isScEtaEB[0]),
   isScEtaEE(gStore.getData(this).isScEtaEE[0]),
   pixelSeed(gStore.getData(this).pixelSeed[0]),
   electronVeto(gStore.getData(this).electronVeto[0]),
-  electronIdx(gStore.getData(this).electronIdx[0])
+  electronIdx(gStore.getData(this).electronIdx[0]),
+  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0])
 {
 }
 
@@ -364,12 +340,9 @@ panda::Photon::operator=(Photon const& _src)
   cutBased = _src.cutBased;
   vidNestedWPBitmap = _src.vidNestedWPBitmap;
   mvaID = _src.mvaID;
-  mvaID17 = _src.mvaID17;
+  mvaIDV1 = _src.mvaIDV1;
   pfRelIso03_all = _src.pfRelIso03_all;
   pfRelIso03_chg = _src.pfRelIso03_chg;
-  cutBased17Bitmap = _src.cutBased17Bitmap;
-  mvaID17_WP80 = _src.mvaID17_WP80;
-  mvaID17_WP90 = _src.mvaID17_WP90;
   mvaID_WP80 = _src.mvaID_WP80;
   mvaID_WP90 = _src.mvaID_WP90;
   isScEtaEB = _src.isScEtaEB;
@@ -377,6 +350,7 @@ panda::Photon::operator=(Photon const& _src)
   pixelSeed = _src.pixelSeed;
   electronVeto = _src.electronVeto;
   electronIdx = _src.electronIdx;
+  cutBasedBitmap = _src.cutBasedBitmap;
 
   /* BEGIN CUSTOM Photon.cc.operator= */
   /* END CUSTOM */
@@ -398,12 +372,9 @@ panda::Photon::doBook_(TTree& _tree, TString const& _name, utils::BranchList con
   utils::book(_tree, _name, "cutBased", "", 'I', &cutBased, _branches);
   utils::book(_tree, _name, "vidNestedWPBitmap", "", 'I', &vidNestedWPBitmap, _branches);
   utils::book(_tree, _name, "mvaID", "", 'F', &mvaID, _branches);
-  utils::book(_tree, _name, "mvaID17", "", 'F', &mvaID17, _branches);
+  utils::book(_tree, _name, "mvaIDV1", "", 'F', &mvaIDV1, _branches);
   utils::book(_tree, _name, "pfRelIso03_all", "", 'F', &pfRelIso03_all, _branches);
   utils::book(_tree, _name, "pfRelIso03_chg", "", 'F', &pfRelIso03_chg, _branches);
-  utils::book(_tree, _name, "cutBased17Bitmap", "", 'I', &cutBased17Bitmap, _branches);
-  utils::book(_tree, _name, "mvaID17_WP80", "", 'O', &mvaID17_WP80, _branches);
-  utils::book(_tree, _name, "mvaID17_WP90", "", 'O', &mvaID17_WP90, _branches);
   utils::book(_tree, _name, "mvaID_WP80", "", 'O', &mvaID_WP80, _branches);
   utils::book(_tree, _name, "mvaID_WP90", "", 'O', &mvaID_WP90, _branches);
   utils::book(_tree, _name, "isScEtaEB", "", 'O', &isScEtaEB, _branches);
@@ -411,6 +382,7 @@ panda::Photon::doBook_(TTree& _tree, TString const& _name, utils::BranchList con
   utils::book(_tree, _name, "pixelSeed", "", 'O', &pixelSeed, _branches);
   utils::book(_tree, _name, "electronVeto", "", 'O', &electronVeto, _branches);
   utils::book(_tree, _name, "electronIdx", "", 'I', &electronIdx, _branches);
+  utils::book(_tree, _name, "cutBasedBitmap", "", 'I', &cutBasedBitmap, _branches);
 }
 
 void
@@ -427,12 +399,9 @@ panda::Photon::doInit_()
   cutBased = 0;
   vidNestedWPBitmap = 0;
   mvaID = 0.;
-  mvaID17 = 0.;
+  mvaIDV1 = 0.;
   pfRelIso03_all = 0.;
   pfRelIso03_chg = 0.;
-  cutBased17Bitmap = 0;
-  mvaID17_WP80 = false;
-  mvaID17_WP90 = false;
   mvaID_WP80 = false;
   mvaID_WP90 = false;
   isScEtaEB = false;
@@ -440,6 +409,7 @@ panda::Photon::doInit_()
   pixelSeed = false;
   electronVeto = false;
   electronIdx = 0;
+  cutBasedBitmap = 0;
 
   /* BEGIN CUSTOM Photon.cc.doInit_ */
   /* END CUSTOM */
@@ -467,12 +437,9 @@ panda::Photon::dump(std::ostream& _out/* = std::cout*/) const
   _out << "cutBased = " << cutBased << std::endl;
   _out << "vidNestedWPBitmap = " << vidNestedWPBitmap << std::endl;
   _out << "mvaID = " << mvaID << std::endl;
-  _out << "mvaID17 = " << mvaID17 << std::endl;
+  _out << "mvaIDV1 = " << mvaIDV1 << std::endl;
   _out << "pfRelIso03_all = " << pfRelIso03_all << std::endl;
   _out << "pfRelIso03_chg = " << pfRelIso03_chg << std::endl;
-  _out << "cutBased17Bitmap = " << cutBased17Bitmap << std::endl;
-  _out << "mvaID17_WP80 = " << mvaID17_WP80 << std::endl;
-  _out << "mvaID17_WP90 = " << mvaID17_WP90 << std::endl;
   _out << "mvaID_WP80 = " << mvaID_WP80 << std::endl;
   _out << "mvaID_WP90 = " << mvaID_WP90 << std::endl;
   _out << "isScEtaEB = " << isScEtaEB << std::endl;
@@ -480,6 +447,7 @@ panda::Photon::dump(std::ostream& _out/* = std::cout*/) const
   _out << "pixelSeed = " << pixelSeed << std::endl;
   _out << "electronVeto = " << electronVeto << std::endl;
   _out << "electronIdx = " << electronIdx << std::endl;
+  _out << "cutBasedBitmap = " << cutBasedBitmap << std::endl;
 }
 
 /* BEGIN CUSTOM Photon.cc.global */
