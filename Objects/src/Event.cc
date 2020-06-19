@@ -3,9 +3,9 @@
 panda::Event::Event() :
   TreeEntry()
 {
-  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &Pileup}};
+  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &LHEPart, &Pileup, &METFixEE2017}};
   objects_.insert(objects_.end(), myObjects.begin(), myObjects.end());
-  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj}};
+  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj, &LHEPart}};
   collections_.insert(collections_.end(), myCollections.begin(), myCollections.end());
   /* BEGIN CUSTOM Event.cc.ctor */
   /* END CUSTOM */
@@ -41,7 +41,9 @@ panda::Event::Event(Event const& _src) :
   CorrT1METJet(_src.CorrT1METJet),
   TrigObj(_src.TrigObj),
   LHE(_src.LHE),
+  LHEPart(_src.LHEPart),
   Pileup(_src.Pileup),
+  METFixEE2017(_src.METFixEE2017),
   run(_src.run),
   luminosityBlock(_src.luminosityBlock),
   event(_src.event),
@@ -54,9 +56,9 @@ panda::Event::Event(Event const& _src) :
   genWeight(_src.genWeight),
   LHEWeight_originalXWGTUP(_src.LHEWeight_originalXWGTUP)
 {
-  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &Pileup}};
+  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &LHEPart, &Pileup, &METFixEE2017}};
   objects_.insert(objects_.end(), myObjects.begin(), myObjects.end());
-  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj}};
+  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj, &LHEPart}};
   collections_.insert(collections_.end(), myCollections.begin(), myCollections.end());
 
   /* BEGIN CUSTOM Event.cc.copy_ctor */
@@ -117,7 +119,9 @@ panda::Event::operator=(Event const& _src)
   CorrT1METJet = _src.CorrT1METJet;
   TrigObj = _src.TrigObj;
   LHE = _src.LHE;
+  LHEPart = _src.LHEPart;
   Pileup = _src.Pileup;
+  METFixEE2017 = _src.METFixEE2017;
 
   return *this;
 }
@@ -173,7 +177,9 @@ panda::Event::dump(std::ostream& _out/* = std::cout*/) const
   CorrT1METJet.dump(_out);
   TrigObj.dump(_out);
   LHE.dump(_out);
+  LHEPart.dump(_out);
   Pileup.dump(_out);
+  METFixEE2017.dump(_out);
 
 }
 /*static*/
@@ -211,7 +217,9 @@ panda::Event::getListOfBranches(Bool_t _direct/* = kFALSE*/)
     blist += CorrT1METJet::getListOfBranches().fullNames("CorrT1METJet");
     blist += TrigObj::getListOfBranches().fullNames("TrigObj");
     blist += Lhe::getListOfBranches().fullNames("LHE");
+    blist += LHEPart::getListOfBranches().fullNames("LHEPart");
     blist += Piles::getListOfBranches().fullNames("Pileup");
+    blist += RecoMet::getListOfBranches().fullNames("METFixEE2017");
   }
   /* BEGIN CUSTOM Event.cc.getListOfBranches_ */
   /* END CUSTOM */

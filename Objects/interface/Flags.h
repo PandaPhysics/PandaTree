@@ -49,6 +49,7 @@ namespace panda {
     Bool_t trkPOG_toomanystripclus53X{};
     Bool_t trkPOG_logErrorTooManyClusters{};
     Bool_t METFilters{};
+    Bool_t ecalBadCalibFilterV2{};
 
     /* BEGIN CUSTOM Flags.h.classdef */
     /* END CUSTOM */

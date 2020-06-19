@@ -22,6 +22,7 @@
 #include "CorrT1METJet.h"
 #include "TrigObj.h"
 #include "Lhe.h"
+#include "LHEPart.h"
 #include "Piles.h"
 
 namespace panda {
@@ -64,7 +65,9 @@ namespace panda {
     CorrT1METJetCollection CorrT1METJet = CorrT1METJetCollection("CorrT1METJet", 32);
     TrigObjCollection TrigObj = TrigObjCollection("TrigObj", 512);
     Lhe LHE = Lhe("LHE");
+    LHEPartCollection LHEPart = LHEPartCollection("LHEPart", 64);
     Piles Pileup = Piles("Pileup");
+    RecoMet METFixEE2017 = RecoMet("METFixEE2017");
 
     UInt_t run{};
     UInt_t luminosityBlock{};

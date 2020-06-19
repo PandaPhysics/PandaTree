@@ -18,7 +18,7 @@ panda::Tau::datastore::allocate(UInt_t _nmax)
   decayMode = new Int_t[nmax_];
   idDecayMode = new Bool_t[nmax_];
   idDecayModeNewDMs = new Bool_t[nmax_];
-  idMVAoldDM2017v2 = new UInt_t[nmax_];
+  idMVAoldDM2017v2 = new UChar_t[nmax_];
   leadTkPtOverTauPt = new Float_t[nmax_];
   leadTkDeltaEta = new Float_t[nmax_];
   leadTkDeltaPhi = new Float_t[nmax_];
@@ -30,7 +30,7 @@ panda::Tau::datastore::allocate(UInt_t _nmax)
   neutralIso = new Float_t[nmax_];
   puCorr = new Float_t[nmax_];
   photonsOutsideSignalCone = new Float_t[nmax_];
-  idMVAnewDM2017v2 = new Int_t[nmax_];
+  idMVAnewDM2017v2 = new UChar_t[nmax_];
 }
 
 void
@@ -153,7 +153,7 @@ panda::Tau::datastore::book(TTree& _tree, TString const& _name, utils::BranchLis
   utils::book(_tree, _name, "decayMode", size, 'I', decayMode, _branches);
   utils::book(_tree, _name, "idDecayMode", size, 'O', idDecayMode, _branches);
   utils::book(_tree, _name, "idDecayModeNewDMs", size, 'O', idDecayModeNewDMs, _branches);
-  utils::book(_tree, _name, "idMVAoldDM2017v2", size, 'i', idMVAoldDM2017v2, _branches);
+  utils::book(_tree, _name, "idMVAoldDM2017v2", size, 'b', idMVAoldDM2017v2, _branches);
   utils::book(_tree, _name, "leadTkPtOverTauPt", size, 'F', leadTkPtOverTauPt, _branches);
   utils::book(_tree, _name, "leadTkDeltaEta", size, 'F', leadTkDeltaEta, _branches);
   utils::book(_tree, _name, "leadTkDeltaPhi", size, 'F', leadTkDeltaPhi, _branches);
@@ -165,7 +165,7 @@ panda::Tau::datastore::book(TTree& _tree, TString const& _name, utils::BranchLis
   utils::book(_tree, _name, "neutralIso", size, 'F', neutralIso, _branches);
   utils::book(_tree, _name, "puCorr", size, 'F', puCorr, _branches);
   utils::book(_tree, _name, "photonsOutsideSignalCone", size, 'F', photonsOutsideSignalCone, _branches);
-  utils::book(_tree, _name, "idMVAnewDM2017v2", size, 'I', idMVAnewDM2017v2, _branches);
+  utils::book(_tree, _name, "idMVAnewDM2017v2", size, 'b', idMVAnewDM2017v2, _branches);
 }
 
 void
@@ -341,7 +341,7 @@ panda::Tau::doBook_(TTree& _tree, TString const& _name, utils::BranchList const&
   utils::book(_tree, _name, "decayMode", "", 'I', &decayMode, _branches);
   utils::book(_tree, _name, "idDecayMode", "", 'O', &idDecayMode, _branches);
   utils::book(_tree, _name, "idDecayModeNewDMs", "", 'O', &idDecayModeNewDMs, _branches);
-  utils::book(_tree, _name, "idMVAoldDM2017v2", "", 'i', &idMVAoldDM2017v2, _branches);
+  utils::book(_tree, _name, "idMVAoldDM2017v2", "", 'b', &idMVAoldDM2017v2, _branches);
   utils::book(_tree, _name, "leadTkPtOverTauPt", "", 'F', &leadTkPtOverTauPt, _branches);
   utils::book(_tree, _name, "leadTkDeltaEta", "", 'F', &leadTkDeltaEta, _branches);
   utils::book(_tree, _name, "leadTkDeltaPhi", "", 'F', &leadTkDeltaPhi, _branches);
@@ -353,7 +353,7 @@ panda::Tau::doBook_(TTree& _tree, TString const& _name, utils::BranchList const&
   utils::book(_tree, _name, "neutralIso", "", 'F', &neutralIso, _branches);
   utils::book(_tree, _name, "puCorr", "", 'F', &puCorr, _branches);
   utils::book(_tree, _name, "photonsOutsideSignalCone", "", 'F', &photonsOutsideSignalCone, _branches);
-  utils::book(_tree, _name, "idMVAnewDM2017v2", "", 'I', &idMVAnewDM2017v2, _branches);
+  utils::book(_tree, _name, "idMVAnewDM2017v2", "", 'b', &idMVAnewDM2017v2, _branches);
 }
 
 void
@@ -398,7 +398,7 @@ panda::Tau::dump(std::ostream& _out/* = std::cout*/) const
   _out << "decayMode = " << decayMode << std::endl;
   _out << "idDecayMode = " << idDecayMode << std::endl;
   _out << "idDecayModeNewDMs = " << idDecayModeNewDMs << std::endl;
-  _out << "idMVAoldDM2017v2 = " << idMVAoldDM2017v2 << std::endl;
+  _out << "idMVAoldDM2017v2 = " << static_cast<const UInt_t>(idMVAoldDM2017v2) << std::endl;
   _out << "leadTkPtOverTauPt = " << leadTkPtOverTauPt << std::endl;
   _out << "leadTkDeltaEta = " << leadTkDeltaEta << std::endl;
   _out << "leadTkDeltaPhi = " << leadTkDeltaPhi << std::endl;
@@ -410,7 +410,7 @@ panda::Tau::dump(std::ostream& _out/* = std::cout*/) const
   _out << "neutralIso = " << neutralIso << std::endl;
   _out << "puCorr = " << puCorr << std::endl;
   _out << "photonsOutsideSignalCone = " << photonsOutsideSignalCone << std::endl;
-  _out << "idMVAnewDM2017v2 = " << idMVAnewDM2017v2 << std::endl;
+  _out << "idMVAnewDM2017v2 = " << static_cast<const UInt_t>(idMVAnewDM2017v2) << std::endl;
 }
 
 /* BEGIN CUSTOM Tau.cc.global */

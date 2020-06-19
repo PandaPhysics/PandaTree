@@ -7,7 +7,7 @@ panda::Photon::getListOfBranches()
   utils::BranchList blist;
   blist += PFParticle::getListOfBranches();
   blist += EGamma::getListOfBranches();
-  blist += {"mvaID", "mvaIDV1", "pfRelIso03_all", "pfRelIso03_chg", "mvaID_WP80", "mvaID_WP90", "isScEtaEB", "isScEtaEE", "pixelSeed", "electronVeto", "electronIdx", "cutBasedBitmap"};
+  blist += {"mvaID", "mvaIDV1", "pfRelIso03_all", "pfRelIso03_chg", "mvaID_WP80", "mvaID_WP90", "isScEtaEB", "isScEtaEE", "pixelSeed", "electronVeto", "electronIdx", "cutBasedBitmap", "cutBased"};
   return blist;
 }
 
@@ -36,6 +36,7 @@ panda::Photon::datastore::allocate(UInt_t _nmax)
   electronVeto = new Bool_t[nmax_];
   electronIdx = new Int_t[nmax_];
   cutBasedBitmap = new Int_t[nmax_];
+  cutBased = new Int_t[nmax_];
 }
 
 void
@@ -83,6 +84,8 @@ panda::Photon::datastore::deallocate()
   electronIdx = 0;
   delete [] cutBasedBitmap;
   cutBasedBitmap = 0;
+  delete [] cutBased;
+  cutBased = 0;
 }
 
 void
@@ -110,6 +113,7 @@ panda::Photon::datastore::setStatus(TTree& _tree, TString const& _name, utils::B
   utils::setStatus(_tree, _name, "electronVeto", _branches);
   utils::setStatus(_tree, _name, "electronIdx", _branches);
   utils::setStatus(_tree, _name, "cutBasedBitmap", _branches);
+  utils::setStatus(_tree, _name, "cutBased", _branches);
 }
 
 panda::utils::BranchList
@@ -137,6 +141,7 @@ panda::Photon::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "electronVeto"));
   blist.push_back(utils::getStatus(_tree, _name, "electronIdx"));
   blist.push_back(utils::getStatus(_tree, _name, "cutBasedBitmap"));
+  blist.push_back(utils::getStatus(_tree, _name, "cutBased"));
 
   return blist;
 }
@@ -166,6 +171,7 @@ panda::Photon::datastore::setAddress(TTree& _tree, TString const& _name, utils::
   utils::setAddress(_tree, _name, "electronVeto", electronVeto, _branches, _setStatus);
   utils::setAddress(_tree, _name, "electronIdx", electronIdx, _branches, _setStatus);
   utils::setAddress(_tree, _name, "cutBasedBitmap", cutBasedBitmap, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "cutBased", cutBased, _branches, _setStatus);
 }
 
 void
@@ -195,6 +201,7 @@ panda::Photon::datastore::book(TTree& _tree, TString const& _name, utils::Branch
   utils::book(_tree, _name, "electronVeto", size, 'O', electronVeto, _branches);
   utils::book(_tree, _name, "electronIdx", size, 'I', electronIdx, _branches);
   utils::book(_tree, _name, "cutBasedBitmap", size, 'I', cutBasedBitmap, _branches);
+  utils::book(_tree, _name, "cutBased", size, 'I', cutBased, _branches);
 }
 
 void
@@ -222,6 +229,7 @@ panda::Photon::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "electronVeto");
   utils::resetAddress(_tree, _name, "electronIdx");
   utils::resetAddress(_tree, _name, "cutBasedBitmap");
+  utils::resetAddress(_tree, _name, "cutBased");
 }
 
 void
@@ -252,7 +260,8 @@ panda::Photon::Photon(char const* _name/* = ""*/) :
   pixelSeed(gStore.getData(this).pixelSeed[0]),
   electronVeto(gStore.getData(this).electronVeto[0]),
   electronIdx(gStore.getData(this).electronIdx[0]),
-  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0])
+  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0]),
+  cutBased(gStore.getData(this).cutBased[0])
 {
 }
 
@@ -270,7 +279,8 @@ panda::Photon::Photon(Photon const& _src) :
   pixelSeed(gStore.getData(this).pixelSeed[0]),
   electronVeto(gStore.getData(this).electronVeto[0]),
   electronIdx(gStore.getData(this).electronIdx[0]),
-  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0])
+  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0]),
+  cutBased(gStore.getData(this).cutBased[0])
 {
   operator=(_src);
 }
@@ -289,7 +299,8 @@ panda::Photon::Photon(datastore& _data, UInt_t _idx) :
   pixelSeed(_data.pixelSeed[_idx]),
   electronVeto(_data.electronVeto[_idx]),
   electronIdx(_data.electronIdx[_idx]),
-  cutBasedBitmap(_data.cutBasedBitmap[_idx])
+  cutBasedBitmap(_data.cutBasedBitmap[_idx]),
+  cutBased(_data.cutBased[_idx])
 {
 }
 
@@ -307,7 +318,8 @@ panda::Photon::Photon(ArrayBase* _array) :
   pixelSeed(gStore.getData(this).pixelSeed[0]),
   electronVeto(gStore.getData(this).electronVeto[0]),
   electronIdx(gStore.getData(this).electronIdx[0]),
-  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0])
+  cutBasedBitmap(gStore.getData(this).cutBasedBitmap[0]),
+  cutBased(gStore.getData(this).cutBased[0])
 {
 }
 
@@ -351,6 +363,7 @@ panda::Photon::operator=(Photon const& _src)
   electronVeto = _src.electronVeto;
   electronIdx = _src.electronIdx;
   cutBasedBitmap = _src.cutBasedBitmap;
+  cutBased = _src.cutBased;
 
   /* BEGIN CUSTOM Photon.cc.operator= */
   /* END CUSTOM */
@@ -383,6 +396,7 @@ panda::Photon::doBook_(TTree& _tree, TString const& _name, utils::BranchList con
   utils::book(_tree, _name, "electronVeto", "", 'O', &electronVeto, _branches);
   utils::book(_tree, _name, "electronIdx", "", 'I', &electronIdx, _branches);
   utils::book(_tree, _name, "cutBasedBitmap", "", 'I', &cutBasedBitmap, _branches);
+  utils::book(_tree, _name, "cutBased", "", 'I', &cutBased, _branches);
 }
 
 void
@@ -410,6 +424,7 @@ panda::Photon::doInit_()
   electronVeto = false;
   electronIdx = 0;
   cutBasedBitmap = 0;
+  cutBased = 0;
 
   /* BEGIN CUSTOM Photon.cc.doInit_ */
   /* END CUSTOM */
@@ -448,6 +463,7 @@ panda::Photon::dump(std::ostream& _out/* = std::cout*/) const
   _out << "electronVeto = " << electronVeto << std::endl;
   _out << "electronIdx = " << electronIdx << std::endl;
   _out << "cutBasedBitmap = " << cutBasedBitmap << std::endl;
+  _out << "cutBased = " << cutBased << std::endl;
 }
 
 /* BEGIN CUSTOM Photon.cc.global */

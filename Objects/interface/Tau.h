@@ -33,7 +33,7 @@ namespace panda {
       Int_t* decayMode{0};
       Bool_t* idDecayMode{0};
       Bool_t* idDecayModeNewDMs{0};
-      UInt_t* idMVAoldDM2017v2{0};
+      UChar_t* idMVAoldDM2017v2{0};
       Float_t* leadTkPtOverTauPt{0};
       Float_t* leadTkDeltaEta{0};
       Float_t* leadTkDeltaPhi{0};
@@ -45,7 +45,7 @@ namespace panda {
       Float_t* neutralIso{0};
       Float_t* puCorr{0};
       Float_t* photonsOutsideSignalCone{0};
-      Int_t* idMVAnewDM2017v2{0};
+      UChar_t* idMVAnewDM2017v2{0};
 
       void allocate(UInt_t n) override;
       void deallocate() override;
@@ -92,7 +92,7 @@ namespace panda {
     Int_t& decayMode;
     Bool_t& idDecayMode;
     Bool_t& idDecayModeNewDMs;
-    UInt_t& idMVAoldDM2017v2;
+    UChar_t& idMVAoldDM2017v2;
     Float_t& leadTkPtOverTauPt;
     Float_t& leadTkDeltaEta;
     Float_t& leadTkDeltaPhi;
@@ -104,7 +104,7 @@ namespace panda {
     Float_t& neutralIso;
     Float_t& puCorr;
     Float_t& photonsOutsideSignalCone;
-    Int_t& idMVAnewDM2017v2;
+    UChar_t& idMVAnewDM2017v2;
 
     /* BEGIN CUSTOM Tau.h.classdef */
     /* END CUSTOM */

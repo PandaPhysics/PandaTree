@@ -53,6 +53,7 @@ namespace panda {
       Bool_t* electronVeto{0};
       Int_t* electronIdx{0};
       Int_t* cutBasedBitmap{0};
+      Int_t* cutBased{0};
 
       void allocate(UInt_t n) override;
       void deallocate() override;
@@ -118,6 +119,7 @@ namespace panda {
     Bool_t& electronVeto;
     Int_t& electronIdx;
     Int_t& cutBasedBitmap;
+    Int_t& cutBased;
 
     /* BEGIN CUSTOM Photon.h.classdef */
     /* END CUSTOM */

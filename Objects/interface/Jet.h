@@ -48,6 +48,9 @@ namespace panda {
       Int_t* electronIdx2{0};
       Int_t* muonIdx1{0};
       Int_t* muonIdx2{0};
+      Float_t* muonSubtrFactor{0};
+      Int_t* partonFlavour{0};
+      Float_t* l1fac{0};
 
       void allocate(UInt_t n) override;
       void deallocate() override;
@@ -109,6 +112,9 @@ namespace panda {
     Int_t& electronIdx2;
     Int_t& muonIdx1;
     Int_t& muonIdx2;
+    Float_t& muonSubtrFactor;
+    Int_t& partonFlavour;
+    Float_t& l1fac;
 
     /* BEGIN CUSTOM Jet.h.classdef */
     /* END CUSTOM */

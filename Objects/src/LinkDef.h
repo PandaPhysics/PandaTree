@@ -18,6 +18,7 @@
 #include "PandaTree/Objects/interface/FatJet.h"
 #include "PandaTree/Objects/interface/TrigObj.h"
 #include "PandaTree/Objects/interface/Lhe.h"
+#include "PandaTree/Objects/interface/LHEPart.h"
 #include "PandaTree/Objects/interface/Piles.h"
 #include "PandaTree/Objects/interface/Triggers.h"
 #include "PandaTree/Objects/interface/BReweight.h"
@@ -53,6 +54,7 @@
 #pragma link C++ class panda::FatJet;
 #pragma link C++ class panda::TrigObj;
 #pragma link C++ class panda::Lhe;
+#pragma link C++ class panda::LHEPart;
 #pragma link C++ class panda::Piles;
 #pragma link C++ class panda::Triggers;
 #pragma link C++ class panda::BReweight;
@@ -118,6 +120,10 @@
 #pragma link C++ class panda::Collection<panda::TrigObj>;
 #pragma link C++ class panda::Ref<panda::TrigObj>;
 #pragma link C++ class panda::RefVector<panda::TrigObj>;
+#pragma link C++ class panda::Array<panda::LHEPart>;
+#pragma link C++ class panda::Collection<panda::LHEPart>;
+#pragma link C++ class panda::Ref<panda::LHEPart>;
+#pragma link C++ class panda::RefVector<panda::LHEPart>;
 #pragma link C++ class panda::Array<panda::CorrT1METJet>;
 #pragma link C++ class panda::Collection<panda::CorrT1METJet>;
 #pragma link C++ class panda::Ref<panda::CorrT1METJet>;
@@ -186,6 +192,10 @@
 #pragma link C++ typedef panda::TrigObjCollection;
 #pragma link C++ typedef panda::TrigObjRef;
 #pragma link C++ typedef panda::TrigObjRefVector;
+#pragma link C++ typedef panda::LHEPartArray;
+#pragma link C++ typedef panda::LHEPartCollection;
+#pragma link C++ typedef panda::LHEPartRef;
+#pragma link C++ typedef panda::LHEPartRefVector;
 #pragma link C++ typedef panda::CorrT1METJetArray;
 #pragma link C++ typedef panda::CorrT1METJetCollection;
 #pragma link C++ typedef panda::CorrT1METJetRef;

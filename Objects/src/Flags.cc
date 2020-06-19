@@ -5,7 +5,7 @@ panda::utils::BranchList
 panda::Flags::getListOfBranches()
 {
   utils::BranchList blist;
-  blist += {"HBHENoiseFilter", "HBHENoiseIsoFilter", "CSCTightHaloFilter", "CSCTightHaloTrkMuUnvetoFilter", "CSCTightHalo2015Filter", "globalTightHalo2016Filter", "globalSuperTightHalo2016Filter", "HcalStripHaloFilter", "hcalLaserEventFilter", "EcalDeadCellTriggerPrimitiveFilter", "EcalDeadCellBoundaryEnergyFilter", "ecalBadCalibFilter", "goodVertices", "eeBadScFilter", "ecalLaserCorrFilter", "trkPOGFilters", "chargedHadronTrackResolutionFilter", "muonBadTrackFilter", "BadChargedCandidateFilter", "BadPFMuonFilter", "BadChargedCandidateSummer16Filter", "BadPFMuonSummer16Filter", "trkPOG_manystripclus53X", "trkPOG_toomanystripclus53X", "trkPOG_logErrorTooManyClusters", "METFilters"};
+  blist += {"HBHENoiseFilter", "HBHENoiseIsoFilter", "CSCTightHaloFilter", "CSCTightHaloTrkMuUnvetoFilter", "CSCTightHalo2015Filter", "globalTightHalo2016Filter", "globalSuperTightHalo2016Filter", "HcalStripHaloFilter", "hcalLaserEventFilter", "EcalDeadCellTriggerPrimitiveFilter", "EcalDeadCellBoundaryEnergyFilter", "ecalBadCalibFilter", "goodVertices", "eeBadScFilter", "ecalLaserCorrFilter", "trkPOGFilters", "chargedHadronTrackResolutionFilter", "muonBadTrackFilter", "BadChargedCandidateFilter", "BadPFMuonFilter", "BadChargedCandidateSummer16Filter", "BadPFMuonSummer16Filter", "trkPOG_manystripclus53X", "trkPOG_toomanystripclus53X", "trkPOG_logErrorTooManyClusters", "METFilters", "ecalBadCalibFilterV2"};
   return blist;
 }
 
@@ -41,7 +41,8 @@ panda::Flags::Flags(Flags const& _src) :
   trkPOG_manystripclus53X(_src.trkPOG_manystripclus53X),
   trkPOG_toomanystripclus53X(_src.trkPOG_toomanystripclus53X),
   trkPOG_logErrorTooManyClusters(_src.trkPOG_logErrorTooManyClusters),
-  METFilters(_src.METFilters)
+  METFilters(_src.METFilters),
+  ecalBadCalibFilterV2(_src.ecalBadCalibFilterV2)
 {
   HBHENoiseFilter = _src.HBHENoiseFilter;
   HBHENoiseIsoFilter = _src.HBHENoiseIsoFilter;
@@ -69,6 +70,7 @@ panda::Flags::Flags(Flags const& _src) :
   trkPOG_toomanystripclus53X = _src.trkPOG_toomanystripclus53X;
   trkPOG_logErrorTooManyClusters = _src.trkPOG_logErrorTooManyClusters;
   METFilters = _src.METFilters;
+  ecalBadCalibFilterV2 = _src.ecalBadCalibFilterV2;
 }
 
 panda::Flags::~Flags()
@@ -104,6 +106,7 @@ panda::Flags::operator=(Flags const& _src)
   trkPOG_toomanystripclus53X = _src.trkPOG_toomanystripclus53X;
   trkPOG_logErrorTooManyClusters = _src.trkPOG_logErrorTooManyClusters;
   METFilters = _src.METFilters;
+  ecalBadCalibFilterV2 = _src.ecalBadCalibFilterV2;
 
   /* BEGIN CUSTOM Flags.cc.operator= */
   /* END CUSTOM */
@@ -140,6 +143,7 @@ panda::Flags::doSetStatus_(TTree& _tree, utils::BranchList const& _branches)
   utils::setStatus(_tree, name_, "trkPOG_toomanystripclus53X", _branches);
   utils::setStatus(_tree, name_, "trkPOG_logErrorTooManyClusters", _branches);
   utils::setStatus(_tree, name_, "METFilters", _branches);
+  utils::setStatus(_tree, name_, "ecalBadCalibFilterV2", _branches);
 }
 
 panda::utils::BranchList
@@ -173,6 +177,7 @@ panda::Flags::doGetStatus_(TTree& _tree) const
   blist.push_back(utils::getStatus(_tree, name_, "trkPOG_toomanystripclus53X"));
   blist.push_back(utils::getStatus(_tree, name_, "trkPOG_logErrorTooManyClusters"));
   blist.push_back(utils::getStatus(_tree, name_, "METFilters"));
+  blist.push_back(utils::getStatus(_tree, name_, "ecalBadCalibFilterV2"));
 
   return blist;
 }
@@ -206,6 +211,7 @@ panda::Flags::doSetAddress_(TTree& _tree, utils::BranchList const& _branches/* =
   utils::setAddress(_tree, name_, "trkPOG_toomanystripclus53X", &trkPOG_toomanystripclus53X, _branches, _setStatus);
   utils::setAddress(_tree, name_, "trkPOG_logErrorTooManyClusters", &trkPOG_logErrorTooManyClusters, _branches, _setStatus);
   utils::setAddress(_tree, name_, "METFilters", &METFilters, _branches, _setStatus);
+  utils::setAddress(_tree, name_, "ecalBadCalibFilterV2", &ecalBadCalibFilterV2, _branches, _setStatus);
 }
 
 void
@@ -237,6 +243,7 @@ panda::Flags::doBook_(TTree& _tree, utils::BranchList const& _branches/* = {"*"}
   utils::book(_tree, name_, "trkPOG_toomanystripclus53X", "", 'O', &trkPOG_toomanystripclus53X, _branches);
   utils::book(_tree, name_, "trkPOG_logErrorTooManyClusters", "", 'O', &trkPOG_logErrorTooManyClusters, _branches);
   utils::book(_tree, name_, "METFilters", "", 'O', &METFilters, _branches);
+  utils::book(_tree, name_, "ecalBadCalibFilterV2", "", 'O', &ecalBadCalibFilterV2, _branches);
 }
 
 void
@@ -268,6 +275,7 @@ panda::Flags::doInit_()
   trkPOG_toomanystripclus53X = false;
   trkPOG_logErrorTooManyClusters = false;
   METFilters = false;
+  ecalBadCalibFilterV2 = false;
 
   /* BEGIN CUSTOM Flags.cc.doInit_ */
   /* END CUSTOM */
@@ -319,6 +327,7 @@ panda::Flags::dump(std::ostream& _out/* = std::cout*/) const
   _out << "trkPOG_toomanystripclus53X = " << trkPOG_toomanystripclus53X << std::endl;
   _out << "trkPOG_logErrorTooManyClusters = " << trkPOG_logErrorTooManyClusters << std::endl;
   _out << "METFilters = " << METFilters << std::endl;
+  _out << "ecalBadCalibFilterV2 = " << ecalBadCalibFilterV2 << std::endl;
 }
 
 /* BEGIN CUSTOM Flags.cc.global */

@@ -56,9 +56,9 @@ namespace panda {
       UChar_t* highPtId{0};
       Int_t* miniIsoId{0};
       UChar_t* multiIsoId{0};
-      UInt_t* mvaId{0};
-      Int_t* pfIsoId{0};
-      Int_t* tkIsoId{0};
+      UChar_t* mvaId{0};
+      UChar_t* pfIsoId{0};
+      UChar_t* tkIsoId{0};
       Bool_t* inTimeMuon{0};
       Bool_t* isGlobal{0};
       Bool_t* isTracker{0};
@@ -138,9 +138,9 @@ namespace panda {
     UChar_t& highPtId;
     Int_t& miniIsoId;
     UChar_t& multiIsoId;
-    UInt_t& mvaId;
-    Int_t& pfIsoId;
-    Int_t& tkIsoId;
+    UChar_t& mvaId;
+    UChar_t& pfIsoId;
+    UChar_t& tkIsoId;
     Bool_t& inTimeMuon;
     Bool_t& isGlobal;
     Bool_t& isTracker;

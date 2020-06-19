@@ -28,6 +28,7 @@ trkPOG_manystripclus53X/O
 trkPOG_toomanystripclus53X/O
 trkPOG_logErrorTooManyClusters/O
 METFilters/O
+ecalBadCalibFilterV2/O
 
 [Met:SINGLE]
 pt/F
@@ -122,6 +123,7 @@ pixelSeed/O
 electronVeto/O
 electronIdx/I
 cutBasedBitmap/I
+cutBased/I
 
 [Electron>Lepton<EGamma]
 deltaEtaSC/F
@@ -170,9 +172,9 @@ nTrackerLayers/I
 highPtId/b
 miniIsoId/I
 multiIsoId/b
-mvaId/i
-pfIsoId/I
-tkIsoId/I
+mvaId/b
+pfIsoId/b
+tkIsoId/b
 inTimeMuon/O
 isGlobal/O
 isTracker/O
@@ -188,7 +190,7 @@ triggerIdLoose/O
 decayMode/I
 idDecayMode/O
 idDecayModeNewDMs/O
-idMVAoldDM2017v2/i
+idMVAoldDM2017v2/b
 leadTkPtOverTauPt/F
 leadTkDeltaEta/F
 leadTkDeltaPhi/F
@@ -200,7 +202,7 @@ chargedIso/F
 neutralIso/F
 puCorr/F
 photonsOutsideSignalCone/F
-idMVAnewDM2017v2/I
+idMVAnewDM2017v2/b
 
 [Jet>RecoParticle]
 area/F
@@ -227,6 +229,9 @@ electronIdx1/I
 electronIdx2/I
 muonIdx1/I
 muonIdx2/I
+muonSubtrFactor/F
+partonFlavour/I
+l1fac/F
 
 [SubJet>Particle]
 btagCMVA/F
@@ -283,6 +288,13 @@ phi/F
 HT/F
 Vpt/F
 Njets/I
+
+[LHEPart]
+eta/F
+mass/F
+pt/F
+phi/F
+pdgId/I
 
 [Piles:SINGLE]
 nTrueInt/F
@@ -992,4 +1004,6 @@ btagWeight/BReweight
 CorrT1METJet/CorrT1METJetCollection(32)
 TrigObj/TrigObjCollection(512)
 LHE/Lhe
+LHEPart/LHEPartCollection(64)
 Pileup/Piles
+METFixEE2017/RecoMet

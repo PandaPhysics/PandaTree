@@ -6,7 +6,7 @@ panda::Jet::getListOfBranches()
 {
   utils::BranchList blist;
   blist += RecoParticle::getListOfBranches();
-  blist += {"area", "bRegCorr", "bRegRes", "btagCMVA", "btagCSVV2", "btagDeepB", "btagDeepC", "btagDeepFlavB", "chEmEF", "chHEF", "muEF", "neEmEF", "neHEF", "qgl", "rawFactor", "jetId", "nConstituents", "nElectrons", "nMuons", "puId", "electronIdx1", "electronIdx2", "muonIdx1", "muonIdx2"};
+  blist += {"area", "bRegCorr", "bRegRes", "btagCMVA", "btagCSVV2", "btagDeepB", "btagDeepC", "btagDeepFlavB", "chEmEF", "chHEF", "muEF", "neEmEF", "neHEF", "qgl", "rawFactor", "jetId", "nConstituents", "nElectrons", "nMuons", "puId", "electronIdx1", "electronIdx2", "muonIdx1", "muonIdx2", "muonSubtrFactor", "partonFlavour", "l1fac"};
   return blist;
 }
 
@@ -39,6 +39,9 @@ panda::Jet::datastore::allocate(UInt_t _nmax)
   electronIdx2 = new Int_t[nmax_];
   muonIdx1 = new Int_t[nmax_];
   muonIdx2 = new Int_t[nmax_];
+  muonSubtrFactor = new Float_t[nmax_];
+  partonFlavour = new Int_t[nmax_];
+  l1fac = new Float_t[nmax_];
 }
 
 void
@@ -94,6 +97,12 @@ panda::Jet::datastore::deallocate()
   muonIdx1 = 0;
   delete [] muonIdx2;
   muonIdx2 = 0;
+  delete [] muonSubtrFactor;
+  muonSubtrFactor = 0;
+  delete [] partonFlavour;
+  partonFlavour = 0;
+  delete [] l1fac;
+  l1fac = 0;
 }
 
 void
@@ -125,6 +134,9 @@ panda::Jet::datastore::setStatus(TTree& _tree, TString const& _name, utils::Bran
   utils::setStatus(_tree, _name, "electronIdx2", _branches);
   utils::setStatus(_tree, _name, "muonIdx1", _branches);
   utils::setStatus(_tree, _name, "muonIdx2", _branches);
+  utils::setStatus(_tree, _name, "muonSubtrFactor", _branches);
+  utils::setStatus(_tree, _name, "partonFlavour", _branches);
+  utils::setStatus(_tree, _name, "l1fac", _branches);
 }
 
 panda::utils::BranchList
@@ -156,6 +168,9 @@ panda::Jet::datastore::getStatus(TTree& _tree, TString const& _name) const
   blist.push_back(utils::getStatus(_tree, _name, "electronIdx2"));
   blist.push_back(utils::getStatus(_tree, _name, "muonIdx1"));
   blist.push_back(utils::getStatus(_tree, _name, "muonIdx2"));
+  blist.push_back(utils::getStatus(_tree, _name, "muonSubtrFactor"));
+  blist.push_back(utils::getStatus(_tree, _name, "partonFlavour"));
+  blist.push_back(utils::getStatus(_tree, _name, "l1fac"));
 
   return blist;
 }
@@ -189,6 +204,9 @@ panda::Jet::datastore::setAddress(TTree& _tree, TString const& _name, utils::Bra
   utils::setAddress(_tree, _name, "electronIdx2", electronIdx2, _branches, _setStatus);
   utils::setAddress(_tree, _name, "muonIdx1", muonIdx1, _branches, _setStatus);
   utils::setAddress(_tree, _name, "muonIdx2", muonIdx2, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "muonSubtrFactor", muonSubtrFactor, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "partonFlavour", partonFlavour, _branches, _setStatus);
+  utils::setAddress(_tree, _name, "l1fac", l1fac, _branches, _setStatus);
 }
 
 void
@@ -222,6 +240,9 @@ panda::Jet::datastore::book(TTree& _tree, TString const& _name, utils::BranchLis
   utils::book(_tree, _name, "electronIdx2", size, 'I', electronIdx2, _branches);
   utils::book(_tree, _name, "muonIdx1", size, 'I', muonIdx1, _branches);
   utils::book(_tree, _name, "muonIdx2", size, 'I', muonIdx2, _branches);
+  utils::book(_tree, _name, "muonSubtrFactor", size, 'F', muonSubtrFactor, _branches);
+  utils::book(_tree, _name, "partonFlavour", size, 'I', partonFlavour, _branches);
+  utils::book(_tree, _name, "l1fac", size, 'F', l1fac, _branches);
 }
 
 void
@@ -253,6 +274,9 @@ panda::Jet::datastore::releaseTree(TTree& _tree, TString const& _name)
   utils::resetAddress(_tree, _name, "electronIdx2");
   utils::resetAddress(_tree, _name, "muonIdx1");
   utils::resetAddress(_tree, _name, "muonIdx2");
+  utils::resetAddress(_tree, _name, "muonSubtrFactor");
+  utils::resetAddress(_tree, _name, "partonFlavour");
+  utils::resetAddress(_tree, _name, "l1fac");
 }
 
 void
@@ -294,7 +318,10 @@ panda::Jet::Jet(char const* _name/* = ""*/) :
   electronIdx1(gStore.getData(this).electronIdx1[0]),
   electronIdx2(gStore.getData(this).electronIdx2[0]),
   muonIdx1(gStore.getData(this).muonIdx1[0]),
-  muonIdx2(gStore.getData(this).muonIdx2[0])
+  muonIdx2(gStore.getData(this).muonIdx2[0]),
+  muonSubtrFactor(gStore.getData(this).muonSubtrFactor[0]),
+  partonFlavour(gStore.getData(this).partonFlavour[0]),
+  l1fac(gStore.getData(this).l1fac[0])
 {
 }
 
@@ -323,7 +350,10 @@ panda::Jet::Jet(Jet const& _src) :
   electronIdx1(gStore.getData(this).electronIdx1[0]),
   electronIdx2(gStore.getData(this).electronIdx2[0]),
   muonIdx1(gStore.getData(this).muonIdx1[0]),
-  muonIdx2(gStore.getData(this).muonIdx2[0])
+  muonIdx2(gStore.getData(this).muonIdx2[0]),
+  muonSubtrFactor(gStore.getData(this).muonSubtrFactor[0]),
+  partonFlavour(gStore.getData(this).partonFlavour[0]),
+  l1fac(gStore.getData(this).l1fac[0])
 {
   operator=(_src);
 }
@@ -353,7 +383,10 @@ panda::Jet::Jet(datastore& _data, UInt_t _idx) :
   electronIdx1(_data.electronIdx1[_idx]),
   electronIdx2(_data.electronIdx2[_idx]),
   muonIdx1(_data.muonIdx1[_idx]),
-  muonIdx2(_data.muonIdx2[_idx])
+  muonIdx2(_data.muonIdx2[_idx]),
+  muonSubtrFactor(_data.muonSubtrFactor[_idx]),
+  partonFlavour(_data.partonFlavour[_idx]),
+  l1fac(_data.l1fac[_idx])
 {
 }
 
@@ -382,7 +415,10 @@ panda::Jet::Jet(ArrayBase* _array) :
   electronIdx1(gStore.getData(this).electronIdx1[0]),
   electronIdx2(gStore.getData(this).electronIdx2[0]),
   muonIdx1(gStore.getData(this).muonIdx1[0]),
-  muonIdx2(gStore.getData(this).muonIdx2[0])
+  muonIdx2(gStore.getData(this).muonIdx2[0]),
+  muonSubtrFactor(gStore.getData(this).muonSubtrFactor[0]),
+  partonFlavour(gStore.getData(this).partonFlavour[0]),
+  l1fac(gStore.getData(this).l1fac[0])
 {
 }
 
@@ -430,6 +466,9 @@ panda::Jet::operator=(Jet const& _src)
   electronIdx2 = _src.electronIdx2;
   muonIdx1 = _src.muonIdx1;
   muonIdx2 = _src.muonIdx2;
+  muonSubtrFactor = _src.muonSubtrFactor;
+  partonFlavour = _src.partonFlavour;
+  l1fac = _src.l1fac;
 
   /* BEGIN CUSTOM Jet.cc.operator= */
   /* END CUSTOM */
@@ -466,6 +505,9 @@ panda::Jet::doBook_(TTree& _tree, TString const& _name, utils::BranchList const&
   utils::book(_tree, _name, "electronIdx2", "", 'I', &electronIdx2, _branches);
   utils::book(_tree, _name, "muonIdx1", "", 'I', &muonIdx1, _branches);
   utils::book(_tree, _name, "muonIdx2", "", 'I', &muonIdx2, _branches);
+  utils::book(_tree, _name, "muonSubtrFactor", "", 'F', &muonSubtrFactor, _branches);
+  utils::book(_tree, _name, "partonFlavour", "", 'I', &partonFlavour, _branches);
+  utils::book(_tree, _name, "l1fac", "", 'F', &l1fac, _branches);
 }
 
 void
@@ -497,6 +539,9 @@ panda::Jet::doInit_()
   electronIdx2 = 0;
   muonIdx1 = 0;
   muonIdx2 = 0;
+  muonSubtrFactor = 0.;
+  partonFlavour = 0;
+  l1fac = 0.;
 
   /* BEGIN CUSTOM Jet.cc.doInit_ */
   /* END CUSTOM */
@@ -539,6 +584,9 @@ panda::Jet::dump(std::ostream& _out/* = std::cout*/) const
   _out << "electronIdx2 = " << electronIdx2 << std::endl;
   _out << "muonIdx1 = " << muonIdx1 << std::endl;
   _out << "muonIdx2 = " << muonIdx2 << std::endl;
+  _out << "muonSubtrFactor = " << muonSubtrFactor << std::endl;
+  _out << "partonFlavour = " << partonFlavour << std::endl;
+  _out << "l1fac = " << l1fac << std::endl;
 }
 
 /* BEGIN CUSTOM Jet.cc.global */
