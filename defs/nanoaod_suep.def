@@ -995,6 +995,7 @@ genWeight/F
 LHEWeight_originalXWGTUP/F
 Flag/Flags
 GenPart/GenPartCollection(256)
+PFCands/PFCandsCollection(2048)
 Electron/ElectronCollection(16)
 Muon/MuonCollection(16)
 Tau/TauCollection(16)

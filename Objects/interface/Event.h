@@ -4,6 +4,7 @@
 #include "Constants.h"
 #include "Flags.h"
 #include "GenPart.h"
+#include "PFCands.h"
 #include "Electron.h"
 #include "Muon.h"
 #include "Tau.h"
@@ -39,6 +40,7 @@ namespace panda {
 
     Flags Flag = Flags("Flag");
     GenPartCollection GenPart = GenPartCollection("GenPart", 256);
+    PFCandsCollection PFCands = PFCandsCollection("PFCands", 2048);
     ElectronCollection Electron = ElectronCollection("Electron", 16);
     MuonCollection Muon = MuonCollection("Muon", 16);
     TauCollection Tau = TauCollection("Tau", 16);

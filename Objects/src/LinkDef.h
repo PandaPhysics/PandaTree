@@ -13,6 +13,7 @@
 #include "PandaTree/Objects/interface/Electron.h"
 #include "PandaTree/Objects/interface/Muon.h"
 #include "PandaTree/Objects/interface/Tau.h"
+#include "PandaTree/Objects/interface/PFCands.h"
 #include "PandaTree/Objects/interface/Jet.h"
 #include "PandaTree/Objects/interface/SubJet.h"
 #include "PandaTree/Objects/interface/FatJet.h"
@@ -49,6 +50,7 @@
 #pragma link C++ class panda::Electron;
 #pragma link C++ class panda::Muon;
 #pragma link C++ class panda::Tau;
+#pragma link C++ class panda::PFCands;
 #pragma link C++ class panda::Jet;
 #pragma link C++ class panda::SubJet;
 #pragma link C++ class panda::FatJet;
@@ -104,6 +106,10 @@
 #pragma link C++ class panda::Collection<panda::Tau>;
 #pragma link C++ class panda::Ref<panda::Tau>;
 #pragma link C++ class panda::RefVector<panda::Tau>;
+#pragma link C++ class panda::Array<panda::PFCands>;
+#pragma link C++ class panda::Collection<panda::PFCands>;
+#pragma link C++ class panda::Ref<panda::PFCands>;
+#pragma link C++ class panda::RefVector<panda::PFCands>;
 #pragma link C++ class panda::Array<panda::Jet>;
 #pragma link C++ class panda::Collection<panda::Jet>;
 #pragma link C++ class panda::Ref<panda::Jet>;
@@ -176,6 +182,10 @@
 #pragma link C++ typedef panda::TauCollection;
 #pragma link C++ typedef panda::TauRef;
 #pragma link C++ typedef panda::TauRefVector;
+#pragma link C++ typedef panda::PFCandsArray;
+#pragma link C++ typedef panda::PFCandsCollection;
+#pragma link C++ typedef panda::PFCandsRef;
+#pragma link C++ typedef panda::PFCandsRefVector;
 #pragma link C++ typedef panda::JetArray;
 #pragma link C++ typedef panda::JetCollection;
 #pragma link C++ typedef panda::JetRef;

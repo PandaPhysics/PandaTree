@@ -3,9 +3,9 @@
 panda::Event::Event() :
   TreeEntry()
 {
-  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &LHEPart, &Pileup, &METFixEE2017}};
+  std::vector<Object*> myObjects{{&Flag, &GenPart, &PFCands, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &LHEPart, &Pileup, &METFixEE2017}};
   objects_.insert(objects_.end(), myObjects.begin(), myObjects.end());
-  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj, &LHEPart}};
+  std::vector<CollectionBase*> myCollections{{&GenPart, &PFCands, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj, &LHEPart}};
   collections_.insert(collections_.end(), myCollections.begin(), myCollections.end());
   /* BEGIN CUSTOM Event.cc.ctor */
   /* END CUSTOM */
@@ -15,6 +15,7 @@ panda::Event::Event(Event const& _src) :
   TreeEntry(_src),
   Flag(_src.Flag),
   GenPart(_src.GenPart),
+  PFCands(_src.PFCands),
   Electron(_src.Electron),
   Muon(_src.Muon),
   Tau(_src.Tau),
@@ -56,9 +57,9 @@ panda::Event::Event(Event const& _src) :
   genWeight(_src.genWeight),
   LHEWeight_originalXWGTUP(_src.LHEWeight_originalXWGTUP)
 {
-  std::vector<Object*> myObjects{{&Flag, &GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &LHEPart, &Pileup, &METFixEE2017}};
+  std::vector<Object*> myObjects{{&Flag, &GenPart, &PFCands, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &PV, &GenMET, &CaloMET, &ChsMET, &MET, &PuppiMET, &RawMET, &TkMET, &HLT, &btagWeight, &CorrT1METJet, &TrigObj, &LHE, &LHEPart, &Pileup, &METFixEE2017}};
   objects_.insert(objects_.end(), myObjects.begin(), myObjects.end());
-  std::vector<CollectionBase*> myCollections{{&GenPart, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj, &LHEPart}};
+  std::vector<CollectionBase*> myCollections{{&GenPart, &PFCands, &Electron, &Muon, &Tau, &Jet, &Photon, &SV, &FatJet, &SubJet, &GenJet, &LHEPdfWeight, &LHEReweightingWeight, &LHEScaleWeight, &PSWeight, &CorrT1METJet, &TrigObj, &LHEPart}};
   collections_.insert(collections_.end(), myCollections.begin(), myCollections.end());
 
   /* BEGIN CUSTOM Event.cc.copy_ctor */
@@ -93,6 +94,7 @@ panda::Event::operator=(Event const& _src)
 
   Flag = _src.Flag;
   GenPart = _src.GenPart;
+  PFCands = _src.PFCands;
   Electron = _src.Electron;
   Muon = _src.Muon;
   Tau = _src.Tau;
@@ -151,6 +153,7 @@ panda::Event::dump(std::ostream& _out/* = std::cout*/) const
 
   Flag.dump(_out);
   GenPart.dump(_out);
+  PFCands.dump(_out);
   Electron.dump(_out);
   Muon.dump(_out);
   Tau.dump(_out);
@@ -191,6 +194,7 @@ panda::Event::getListOfBranches(Bool_t _direct/* = kFALSE*/)
   if (!_direct) {
     blist += Flags::getListOfBranches().fullNames("Flag");
     blist += GenPart::getListOfBranches().fullNames("GenPart");
+    blist += PFCands::getListOfBranches().fullNames("PFCands");
     blist += Electron::getListOfBranches().fullNames("Electron");
     blist += Muon::getListOfBranches().fullNames("Muon");
     blist += Tau::getListOfBranches().fullNames("Tau");
